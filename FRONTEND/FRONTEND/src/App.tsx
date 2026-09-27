@@ -1,16 +1,15 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
 import { NavBar } from './components/navBar/NavBar'
 
 export function App() {
-  const [selectedItem, setSelectedItem] = useState(null)
+  const [selectedItem, setSelectedSection] = useState('Inicio')
+  //const sections: {}
   return (
     <div>
-      <NavBar />
+      <NavBar setSelectedSection={setSelectedSection} />
       <main className="App">
+        <h1>{selectedItem}</h1>
         
       </main>
     </div>
