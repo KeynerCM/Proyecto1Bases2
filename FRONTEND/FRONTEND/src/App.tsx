@@ -6,11 +6,12 @@ import './App.css'
 import { NavBar } from './components/navBar/NavBar'
 
 export function App() {
+  const [selectedItem, setSelectedItem] = useState(null)
   return (
     <div>
       <NavBar />
-      <main>
-
+      <main className="App">
+        
       </main>
     </div>
 
