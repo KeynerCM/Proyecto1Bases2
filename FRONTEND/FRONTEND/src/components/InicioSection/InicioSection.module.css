@@ -1,0 +1,104 @@
+.inicioSection {
+    width: 100%;
+    min-height: 100vh;
+
+    box-sizing: border-box;
+    padding: 40px;
+
+    background-color: transparent;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    border-radius: 16px;
+}
+
+/* Tarjetas */
+.inicioSection > div {
+    min-height: 180px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    background-color: #1e293b;
+
+    border-radius: 16px;
+
+    border: 1px solid #334155;
+
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background-color 0.25s ease;
+}
+
+/* Texto superior */
+.inicioSection p {
+    margin: 0 0 10px;
+
+    color: #94a3b8;
+
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Número */
+.inicioSection h1 {
+    margin: 0;
+
+    color: #63fd6a;
+
+    font-size: 42px;
+    font-weight: 700;
+}
+
+/* Efecto hover */
+.inicioSection > div:hover {
+    transform: translateY(-8px);
+
+    background-color: #334155;
+
+    box-shadow: 0 15px 30px rgba(15, 23, 42, 0.25);
+}
+
+/* Pequeño detalle azul al pasar el mouse */
+.inicioSection > div::after {
+    content: '';
+
+    width: 0;
+    height: 4px;
+
+    margin-top: 20px;
+
+    background-color: #3b82f6;
+
+    border-radius: 10px;
+
+    transition: width 0.3s ease;
+}
+
+.inicioSection > div:hover::after {
+    width: 50%;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+    .inicioSection {
+        grid-template-columns: 1fr;
+    }
+
+    .inicioSection > div {
+        min-height: 150px;
+    }
+}
