@@ -14,7 +14,7 @@ export function App() {
     <div>
       <NavBar setSelectedSection={setSelectedSection} />
       <main className="App">
-        <h1>{selectedItem}</h1>
+        <h1 className="heading">{selectedItem}</h1>
         {sections[selectedItem]}
       </main>
     </div>
