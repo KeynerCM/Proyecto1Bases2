@@ -21,12 +21,31 @@ const getCustomerGeneralData = async (req, res) => {
         console.error(error);
 
         res.status(500).json({
-            message: 'Error retrieving products'
+            message: 'Error retrieving customers general info'
         });
     }
 };
 
+const getCustomerSpecificData = async(req, res) =>{
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .input('nombreCliente', sql.NVarChar(100), req.query.name)
+            .execute('GetCustomerAdvancedInfo');
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: 'Error retrieving customers specific info'
+        });
+    }
+};
 
 module.exports = {
-    getCustomerGeneralData
+    getCustomerGeneralData,
+    getCustomerSpecificData
 };
