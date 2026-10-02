@@ -15,6 +15,111 @@ background-color: transparent;
 }
 
 /* =========================
+FILTROS
+========================= */
+
+.filterContainer {
+width: 100%;
+
+
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 12px;
+
+
+}
+
+.searchInput,
+.dateInput,
+.amountInput {
+padding: 13px 18px;
+
+box-sizing: border-box;
+
+border: 1px solid #d9e1ec;
+border-radius: 10px;
+
+background-color: #ffffff;
+
+color: #263238;
+font-size: 15px;
+
+outline: none;
+
+transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+
+}
+
+.searchInput {
+flex: 1 1 280px;
+}
+
+.filterLabel {
+display: flex;
+align-items: center;
+gap: 8px;
+
+color: #607d8b;
+
+font-size: 14px;
+font-weight: 500;
+}
+
+.dateInput {
+padding: 11px 14px;
+
+cursor: pointer;
+}
+
+.amountInput {
+flex: 0 1 140px;
+}
+
+.searchInput::placeholder,
+.amountInput::placeholder {
+color: #9aa7b5;
+}
+
+.searchInput:focus,
+.dateInput:focus,
+.amountInput:focus {
+border-color: #1976d2;
+
+
+box-shadow: 0 0 0 3px rgba(36, 61, 97, 0.781);
+
+
+}
+
+.restoreButton {
+padding: 13px 18px;
+
+border: 1px solid #1976d2;
+border-radius: 10px;
+
+background-color: transparent;
+color: #1976d2;
+
+font-size: 15px;
+font-weight: 500;
+
+cursor: pointer;
+
+transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.restoreButton:hover {
+background-color: #1976d2;
+color: #ffffff;
+}
+
+/* =========================
 MENSAJES
 ========================= */
 
@@ -226,6 +331,17 @@ RESPONSIVE
 
 .salesCards {
     grid-template-columns: 1fr;
+}
+
+.searchInput,
+.filterLabel,
+.amountInput,
+.restoreButton {
+    flex: 1 1 100%;
+}
+
+.dateInput {
+    flex: 1;
 }
 
 .pagination {
