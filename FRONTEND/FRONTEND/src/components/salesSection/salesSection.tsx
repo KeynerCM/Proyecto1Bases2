@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./salesSection.module.css";
+import { InvoiceDetails } from "../invoiceDetails/invoiceDetails";
 
 const ROWS_PER_PAGE = 20;
 
@@ -21,6 +22,7 @@ export function SalesSection() {
     const [sales, setSales] = useState<Sale[]>([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [selectedInvoiceId, setSelectedInvoiceId] = useState<number | null>(null);
 
     const validateFilters = () => {
         if (startDate !== "" && endDate !== "" && startDate > endDate) {
@@ -197,6 +199,7 @@ export function SalesSection() {
                     <div
                         key={sale.InvoiceID}
                         className={styles.saleCard}
+                        onClick={() => setSelectedInvoiceId(sale.InvoiceID)}
                     >
                         <h3>Invoice #{sale.InvoiceID}</h3>
 
@@ -233,6 +236,18 @@ export function SalesSection() {
                     Next page
                 </button>
             </div>
+
+
+            {/* =========================
+                INVOICE DETAILS
+            ========================= */}
+
+            {selectedInvoiceId !== null && (
+                <InvoiceDetails
+                    invoiceId={selectedInvoiceId}
+                    onClose={() => setSelectedInvoiceId(null)}
+                />
+            )}
 
         </section>
     );

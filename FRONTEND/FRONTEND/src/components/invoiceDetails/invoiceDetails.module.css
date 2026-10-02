@@ -1,0 +1,330 @@
+/* =========================
+   MODAL
+========================= */
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background-color: rgba(38, 50, 56, 0.55);
+
+    z-index: 1000;
+
+    animation: fadeIn 0.2s ease;
+}
+
+.invoiceDetails {
+    position: relative;
+
+    width: 100%;
+    max-width: 850px;
+    max-height: 90vh;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+
+    background-color: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow: 0 15px 40px rgba(38, 50, 56, 0.25);
+
+    overflow-y: auto;
+
+    text-align: left;
+
+    animation: slideUp 0.25s ease;
+}
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+
+.closeButton {
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: #f1f4f8;
+
+    color: #455a64;
+
+    font-size: 24px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease,
+                color 0.2s ease;
+}
+
+.closeButton:hover {
+    background-color: #1976d2;
+    color: #ffffff;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.invoiceDetails h2 {
+    margin: 0 45px 25px 0;
+
+    color: #263238;
+
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.sectionTitle {
+    margin: 25px 0 12px;
+
+    color: #1976d2;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    border-bottom: 1px solid #e1e7ef;
+
+    padding-bottom: 8px;
+}
+
+/* =========================
+   DETAILS
+========================= */
+
+.detailsContainer {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.detailItem {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    padding: 15px;
+
+    background-color: #f5f7fb;
+
+    border-radius: 10px;
+
+    border-left: 4px solid #1976d2;
+}
+
+.detailItem span {
+    color: #78909c;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    text-transform: uppercase;
+}
+
+.detailItem strong {
+    color: #37474f;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.detailItem a {
+    color: #1976d2;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.detailItem a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   DELIVERY INSTRUCTIONS
+========================= */
+
+.instructionsCard {
+    padding: 15px;
+
+    background-color: #f5f7fb;
+
+    border-radius: 10px;
+
+    border-left: 4px solid #607d8b;
+}
+
+.instructionsCard p {
+    margin: 0;
+
+    color: #455a64;
+
+    font-size: 14px;
+}
+
+/* =========================
+   INVOICE LINES TABLE
+========================= */
+
+.tableContainer {
+    width: 100%;
+
+    overflow-x: auto;
+
+    border: 1px solid #e1e7ef;
+    border-radius: 10px;
+}
+
+.linesTable {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 14px;
+}
+
+.linesTable th {
+    padding: 12px 14px;
+
+    background-color: #f5f7fb;
+
+    color: #78909c;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    text-align: left;
+    text-transform: uppercase;
+
+    white-space: nowrap;
+}
+
+.linesTable td {
+    padding: 12px 14px;
+
+    border-top: 1px solid #e1e7ef;
+
+    color: #37474f;
+
+    white-space: nowrap;
+}
+
+.linesTable th:not(:first-child),
+.linesTable td:not(:first-child) {
+    text-align: right;
+}
+
+.linesTable td:first-child {
+    white-space: normal;
+}
+
+.linesTable tbody tr:hover {
+    background-color: #f5f7fb;
+}
+
+.linkButton {
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    color: #1976d2;
+
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.linkButton:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+    padding: 40px 0;
+
+    text-align: center;
+
+    color: #607d8b;
+
+    font-size: 15px;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+
+    .invoiceDetails {
+        padding: 22px;
+        max-height: 95vh;
+    }
+
+    .detailsContainer {
+        grid-template-columns: 1fr;
+    }
+
+    .invoiceDetails h2 {
+        font-size: 20px;
+    }
+}
