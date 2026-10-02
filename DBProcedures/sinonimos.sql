@@ -28,3 +28,21 @@ CREATE SYNONYM dbo.syn_PackageTypes FOR Warehouse.PackageTypes;
 DROP SYNONYM IF EXISTS dbo.syn_Suppliers;
 CREATE SYNONYM dbo.syn_Suppliers FOR Purchasing.Suppliers;
 GO
+
+-- VENTAS
+
+DROP SYNONYM IF EXISTS dbo.syn_Invoices;
+CREATE SYNONYM dbo.syn_Invoices FOR Sales.Invoices;
+
+DROP SYNONYM IF EXISTS dbo.syn_InvoiceLines;
+CREATE SYNONYM dbo.syn_InvoiceLines FOR Sales.InvoiceLines;
+
+DROP SYNONYM IF EXISTS dbo.syn_Customers;
+CREATE SYNONYM dbo.syn_Customers FOR Sales.Customers;
+
+DROP SYNONYM IF EXISTS dbo.syn_DeliveryMethods;
+CREATE SYNONYM dbo.syn_DeliveryMethods FOR Application.DeliveryMethods;
+
+DROP SYNONYM IF EXISTS dbo.syn_People;
+CREATE SYNONYM dbo.syn_People FOR Application.People;
+GO
