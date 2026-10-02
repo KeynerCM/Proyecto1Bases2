@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./invoiceDetails.module.css";
 import { StockItemDetails } from "../stockItemDetails/stockItemDetails";
+import { CustomerDetails } from "../customerDetails/customerDetails";
 
 type InvoiceHeader = {
     InvoiceID: number;
@@ -35,6 +36,7 @@ export function InvoiceDetails({ invoiceId, onClose }: InvoiceDetailsProps) {
     const [invoiceLines, setInvoiceLines] = useState<InvoiceLine[]>([]);
     const [loadingDetails, setLoadingDetails] = useState(true);
     const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+    const [showCustomerDetails, setShowCustomerDetails] = useState(false);
 
     useEffect(() => {
         const getInvoiceDetails = async () => {
@@ -101,9 +103,12 @@ export function InvoiceDetails({ invoiceId, onClose }: InvoiceDetailsProps) {
                             <div className={styles.detailsContainer}>
                                 <div className={styles.detailItem}>
                                     <span>Customer</span>
-                                    <strong>
+                                    <button
+                                        className={styles.linkButton}
+                                        onClick={() => setShowCustomerDetails(true)}
+                                    >
                                         {invoiceHeader.CustomerName}
-                                    </strong>
+                                    </button>
                                 </div>
 
                                 <div className={styles.detailItem}>
@@ -198,6 +203,13 @@ export function InvoiceDetails({ invoiceId, onClose }: InvoiceDetailsProps) {
                     )}
                 </div>
             </div>
+
+            {showCustomerDetails && invoiceHeader && (
+                <CustomerDetails
+                    customerName={invoiceHeader.CustomerName}
+                    onClose={() => setShowCustomerDetails(false)}
+                />
+            )}
 
             {selectedProductId !== null && (
                 <StockItemDetails
