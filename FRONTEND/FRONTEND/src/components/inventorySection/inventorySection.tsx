@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./inventorySection.module.css";
+import { StockItemDetails } from "../stockItemDetails/stockItemDetails";
 
 const ROWS_PER_PAGE = 20;
 
@@ -25,6 +26,7 @@ export function InventorySection() {
     const [stockGroups, setStockGroups] = useState<StockGroup[]>([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
 
     const validateQuantities = () => {
         if (minQuantity !== "" && (!Number.isInteger(Number(minQuantity)) || Number(minQuantity) < 1)) {
@@ -205,6 +207,7 @@ export function InventorySection() {
                     <div
                         key={product.StockItemID}
                         className={styles.productCard}
+                        onClick={() => setSelectedProductId(product.StockItemID)}
                     >
                         <h3>{product.StockItemName}</h3>
 
@@ -237,6 +240,18 @@ export function InventorySection() {
                     Next page
                 </button>
             </div>
+
+
+            {/* =========================
+                PRODUCT DETAILS
+            ========================= */}
+
+            {selectedProductId !== null && (
+                <StockItemDetails
+                    stockItemId={selectedProductId}
+                    onClose={() => setSelectedProductId(null)}
+                />
+            )}
 
         </section>
     );
