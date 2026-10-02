@@ -29,7 +29,41 @@ END
 
 GO
 
+CREATE OR ALTER PROCEDURE GetInvoiceAdvancedInfo (
+    @InvoiceID INT
+)
+AS
+BEGIN
+    -- Encabezado de la factura
+    SELECT i.InvoiceID, i.CustomerID, c.CustomerName, d.DeliveryMethodName, i.CustomerPurchaseOrderNumber,
+    cp.FullName AS ContactPerson, sp.FullName AS Salesperson, i.InvoiceDate, i.DeliveryInstructions
+
+    FROM syn_Invoices i
+    INNER JOIN syn_Customers c
+    ON i.CustomerID = c.CustomerID
+    INNER JOIN syn_DeliveryMethods d
+    ON i.DeliveryMethodID = d.DeliveryMethodID
+    INNER JOIN syn_People cp
+    ON i.ContactPersonID = cp.PersonID
+    INNER JOIN syn_People sp
+    ON i.SalespersonPersonID = sp.PersonID
+    WHERE i.InvoiceID = @InvoiceID;
+
+    -- Detalle de la factura
+    SELECT il.InvoiceLineID, il.StockItemID, s.StockItemName, il.Quantity, il.UnitPrice,
+    il.TaxRate, il.TaxAmount, il.ExtendedPrice
+
+    FROM syn_InvoiceLines il
+    INNER JOIN syn_StockItems s
+    ON il.StockItemID = s.StockItemID
+    WHERE il.InvoiceID = @InvoiceID
+    ORDER BY il.InvoiceLineID;
+END
+
+GO
+
 
 EXEC GetInvoicesGeneralInfo @PageNumber = 1;
 EXEC GetInvoicesGeneralInfo @PageNumber = 1, @CustomerFilter = 'Tailspin', @StartDate = '2015-01-01', @EndDate = '2015-12-31', @MinAmount = 1000, @MaxAmount = 5000;
+EXEC GetInvoiceAdvancedInfo @InvoiceID = 1;
 GO
