@@ -3,14 +3,17 @@ import './App.css'
 import { NavBar } from './components/navBar/NavBar'
 import {InicioSection} from './components/InicioSection/InicioSection'
 import {CustomersSection} from './components/customersSection/customersSection'
+import {InventorySection} from './components/inventorySection/inventorySection'
+import {SalesSection} from './components/salesSection/salesSection'
 
 export function App() {
   const [selectedItem, setSelectedSection] = useState('Inicio')
   const sections = {
     'Inicio': <InicioSection />,
-    'Clientes': <CustomersSection />
+    'Clientes': <CustomersSection />,
     //'Proveedores': <ProveedoresSection />,
-    //'Inventarios': <InventariosSection />
+    'Inventarios': <InventorySection />,
+    'Ventas': <SalesSection />
   }
   return (
     <div>
