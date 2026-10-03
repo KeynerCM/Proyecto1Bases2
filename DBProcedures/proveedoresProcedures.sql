@@ -40,6 +40,6 @@ CREATE PROCEDURE datosAvanzadosProveedores @nombreProveedor NVARCHAR(100) AS
  ON s.DeliveryMethodID = d.DeliveryMethodID
  INNER JOIN Application.Cities f
  ON s.DeliveryCityID = f.CityID
- WHERE s.SupplierName = @nombreProveedor
+ WHERE s.SupplierName = 'The Phone Company'
 
  GO
