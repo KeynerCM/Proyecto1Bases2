@@ -54,4 +54,13 @@ CREATE SYNONYM dbo.syn_PurchaseOrders FOR Purchasing.PurchaseOrders;
 
 DROP SYNONYM IF EXISTS dbo.syn_PurchaseOrderLines;
 CREATE SYNONYM dbo.syn_PurchaseOrderLines FOR Purchasing.PurchaseOrderLines;
+
+DROP SYNONYM IF EXISTS dbo.syn_CustomerCategories;
+CREATE SYNONYM dbo.syn_CustomerCategories FOR Sales.CustomerCategories;
+
+DROP SYNONYM IF EXISTS dbo.syn_Cities;
+CREATE SYNONYM dbo.syn_Cities FOR Application.Cities;
+
+DROP SYNONYM IF EXISTS dbo.syn_StateProvinces;
+CREATE SYNONYM dbo.syn_StateProvinces FOR Application.StateProvinces;
 GO

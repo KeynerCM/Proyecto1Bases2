@@ -322,6 +322,38 @@ const getPromedioRotacionInventario = async (req, res) => {
 };
 
 
+// =====================================================
+// ESTADISTICAS 10 - METODO DE ENVIO FAVORITO POR LUGAR
+// =====================================================
+
+const getMetodoEnvioFavorito = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .input('Anio', sql.Int, req.query.anio || null)
+            .input('Mes', sql.Int, req.query.mes || null)
+            .input('CategoriaCliente', sql.NVarChar(100), req.query.categoriaCliente || null)
+            .input('CategoriaProducto', sql.NVarChar(100), req.query.categoriaProducto || null)
+            .input('Producto', sql.NVarChar(100), req.query.producto || null)
+            .execute('MetodoEnvioFavoritoPorLugar');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo método de envío favorito:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving favorite delivery method'
+        });
+    }
+};
+
+
 module.exports = {
     getEstadisticasCompras,
     getEstadisticasVentas,
@@ -331,5 +363,6 @@ module.exports = {
     getMatrizVentasCategorias,
     getSeguimientoComprasClientes,
     getSeguimientoComprasProveedores,
-    getPromedioRotacionInventario
+    getPromedioRotacionInventario,
+    getMetodoEnvioFavorito
 };

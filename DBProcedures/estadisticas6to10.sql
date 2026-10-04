@@ -181,6 +181,53 @@ END;
 GO
 
 
+--PROCEDIMIENTO DE ESTADISTICAS 10
+
+CREATE OR ALTER PROCEDURE MetodoEnvioFavoritoPorLugar
+    @Anio INT = NULL,
+    @Mes INT = NULL,
+    @CategoriaCliente NVARCHAR(100) = NULL,
+    @CategoriaProducto NVARCHAR(100) = NULL,
+    @Producto NVARCHAR(100) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    WITH CTE_Envios AS (
+        SELECT
+            sp.StateProvinceName AS Lugar,
+            d.DeliveryMethodName AS MetodoEnvio,
+            COUNT(i.InvoiceID) AS CantidadVentas,
+            DENSE_RANK() OVER (PARTITION BY sp.StateProvinceName ORDER BY COUNT(i.InvoiceID) DESC) AS RankMetodo
+        FROM syn_Invoices i
+        JOIN syn_Customers c ON i.CustomerID = c.CustomerID
+        JOIN syn_CustomerCategories cc ON c.CustomerCategoryID = cc.CustomerCategoryID
+        JOIN syn_Cities ci ON c.DeliveryCityID = ci.CityID
+        JOIN syn_StateProvinces sp ON ci.StateProvinceID = sp.StateProvinceID
+        JOIN syn_DeliveryMethods d ON i.DeliveryMethodID = d.DeliveryMethodID
+        WHERE
+            (@Anio IS NULL OR YEAR(i.InvoiceDate) = @Anio)
+            AND (@Mes IS NULL OR MONTH(i.InvoiceDate) = @Mes)
+            AND (@CategoriaCliente IS NULL OR cc.CustomerCategoryName LIKE '%' + @CategoriaCliente + '%')
+            AND (@CategoriaProducto IS NULL OR EXISTS (
+                SELECT 1 FROM syn_InvoiceLines il
+                JOIN syn_StockItemStockGroups sg ON il.StockItemID = sg.StockItemID
+                JOIN syn_StockGroups g ON sg.StockGroupID = g.StockGroupID
+                WHERE il.InvoiceID = i.InvoiceID AND g.StockGroupName LIKE '%' + @CategoriaProducto + '%'))
+            AND (@Producto IS NULL OR EXISTS (
+                SELECT 1 FROM syn_InvoiceLines il
+                JOIN syn_StockItems s ON il.StockItemID = s.StockItemID
+                WHERE il.InvoiceID = i.InvoiceID AND s.StockItemName LIKE '%' + @Producto + '%'))
+        GROUP BY sp.StateProvinceName, d.DeliveryMethodName
+    )
+    SELECT Lugar, MetodoEnvio AS MetodoFavorito, CantidadVentas
+    FROM CTE_Envios
+    WHERE RankMetodo = 1
+    ORDER BY CantidadVentas DESC, Lugar;
+END;
+GO
+
+
 EXEC MatrizVentasCategoriasPorAnio;
 EXEC SeguimientoComprasClientes @PageNumber = 1;
 EXEC SeguimientoComprasClientes @PageNumber = 1, @Anio = 2015, @Mes = 3, @Categoria = 'Clothing', @Subcategoria = 'T-Shirts';
@@ -188,4 +235,6 @@ EXEC SeguimientoComprasProveedores @PageNumber = 1;
 EXEC SeguimientoComprasProveedores @PageNumber = 1, @Anio = 2014, @Mes = 6, @Categoria = 'Clothing', @Subcategoria = 'T-Shirts';
 EXEC PromedioRotacionInventario @PageNumber = 1;
 EXEC PromedioRotacionInventario @PageNumber = 1, @Categoria = 'Toys', @Anio = 2015, @Proveedor = 'Northwind';
+EXEC MetodoEnvioFavoritoPorLugar;
+EXEC MetodoEnvioFavoritoPorLugar @Anio = 2015, @Mes = 6, @CategoriaCliente = 'Novelty', @CategoriaProducto = 'Toys', @Producto = 'RC';
 GO

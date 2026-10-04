@@ -9,7 +9,8 @@ const {
     getMatrizVentasCategorias,
     getSeguimientoComprasClientes,
     getSeguimientoComprasProveedores,
-    getPromedioRotacionInventario
+    getPromedioRotacionInventario,
+    getMetodoEnvioFavorito
 } = require('../controllers/estadisticasController');
 
 const router = express.Router();
@@ -49,6 +50,10 @@ router.get('/proveedores/seguimiento', getSeguimientoComprasProveedores);
 
 // Promedio de días de rotación de inventario
 router.get('/inventario/rotacion', getPromedioRotacionInventario);
+
+
+// Método de envío favorito por lugar
+router.get('/envios/favorito', getMetodoEnvioFavorito);
 
 
 module.exports = router;
