@@ -8,7 +8,8 @@ const {
     getTop5ProveedoresCompras,
     getMatrizVentasCategorias,
     getSeguimientoComprasClientes,
-    getSeguimientoComprasProveedores
+    getSeguimientoComprasProveedores,
+    getPromedioRotacionInventario
 } = require('../controllers/estadisticasController');
 
 const router = express.Router();
@@ -44,6 +45,10 @@ router.get('/clientes/seguimiento', getSeguimientoComprasClientes);
 
 // Seguimiento de compras a proveedores
 router.get('/proveedores/seguimiento', getSeguimientoComprasProveedores);
+
+
+// Promedio de días de rotación de inventario
+router.get('/inventario/rotacion', getPromedioRotacionInventario);
 
 
 module.exports = router;

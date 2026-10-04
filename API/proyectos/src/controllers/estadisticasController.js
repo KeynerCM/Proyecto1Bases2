@@ -291,6 +291,37 @@ const getSeguimientoComprasProveedores = async (req, res) => {
 };
 
 
+// =====================================================
+// ESTADISTICAS 9 - PROMEDIO DE DIAS DE ROTACION DE INVENTARIO
+// =====================================================
+
+const getPromedioRotacionInventario = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .input('PageNumber', sql.Int, req.query.pageNumber || 1)
+            .input('Categoria', sql.NVarChar(100), req.query.categoria || null)
+            .input('Anio', sql.Int, req.query.anio || null)
+            .input('Proveedor', sql.NVarChar(100), req.query.proveedor || null)
+            .execute('PromedioRotacionInventario');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo promedio de rotación de inventario:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving inventory turnover'
+        });
+    }
+};
+
+
 module.exports = {
     getEstadisticasCompras,
     getEstadisticasVentas,
@@ -299,5 +330,6 @@ module.exports = {
     getTop5ProveedoresCompras,
     getMatrizVentasCategorias,
     getSeguimientoComprasClientes,
-    getSeguimientoComprasProveedores
+    getSeguimientoComprasProveedores,
+    getPromedioRotacionInventario
 };
