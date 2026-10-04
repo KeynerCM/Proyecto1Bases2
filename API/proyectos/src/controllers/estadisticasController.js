@@ -200,10 +200,169 @@ const getTop5ProveedoresCompras = async (req, res) => {
 };
 
 
+// =====================================================
+// ESTADISTICAS 6 - MATRIZ DE VENTAS POR CATEGORIA Y AÑO
+// =====================================================
+
+const getMatrizVentasCategorias = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .execute('MatrizVentasCategoriasPorAnio');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo matriz de ventas por categoría:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving sales matrix by category'
+        });
+    }
+};
+
+
+// =====================================================
+// ESTADISTICAS 7 - SEGUIMIENTO DE COMPRAS A CLIENTES
+// =====================================================
+
+const getSeguimientoComprasClientes = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .input('PageNumber', sql.Int, req.query.pageNumber || 1)
+            .input('Anio', sql.Int, req.query.anio || null)
+            .input('Mes', sql.Int, req.query.mes || null)
+            .input('Categoria', sql.NVarChar(100), req.query.categoria || null)
+            .input('Subcategoria', sql.NVarChar(100), req.query.subcategoria || null)
+            .execute('SeguimientoComprasClientes');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo seguimiento de compras a clientes:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving customer purchase tracking'
+        });
+    }
+};
+
+
+// =====================================================
+// ESTADISTICAS 8 - SEGUIMIENTO DE COMPRAS A PROVEEDORES
+// =====================================================
+
+const getSeguimientoComprasProveedores = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .input('PageNumber', sql.Int, req.query.pageNumber || 1)
+            .input('Anio', sql.Int, req.query.anio || null)
+            .input('Mes', sql.Int, req.query.mes || null)
+            .input('Categoria', sql.NVarChar(100), req.query.categoria || null)
+            .input('Subcategoria', sql.NVarChar(100), req.query.subcategoria || null)
+            .execute('SeguimientoComprasProveedores');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo seguimiento de compras a proveedores:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving supplier purchase tracking'
+        });
+    }
+};
+
+
+// =====================================================
+// ESTADISTICAS 9 - PROMEDIO DE DIAS DE ROTACION DE INVENTARIO
+// =====================================================
+
+const getPromedioRotacionInventario = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .input('PageNumber', sql.Int, req.query.pageNumber || 1)
+            .input('Categoria', sql.NVarChar(100), req.query.categoria || null)
+            .input('Anio', sql.Int, req.query.anio || null)
+            .input('Proveedor', sql.NVarChar(100), req.query.proveedor || null)
+            .execute('PromedioRotacionInventario');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo promedio de rotación de inventario:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving inventory turnover'
+        });
+    }
+};
+
+
+// =====================================================
+// ESTADISTICAS 10 - METODO DE ENVIO FAVORITO POR LUGAR
+// =====================================================
+
+const getMetodoEnvioFavorito = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .input('Anio', sql.Int, req.query.anio || null)
+            .input('Mes', sql.Int, req.query.mes || null)
+            .input('CategoriaCliente', sql.NVarChar(100), req.query.categoriaCliente || null)
+            .input('CategoriaProducto', sql.NVarChar(100), req.query.categoriaProducto || null)
+            .input('Producto', sql.NVarChar(100), req.query.producto || null)
+            .execute('MetodoEnvioFavoritoPorLugar');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo método de envío favorito:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving favorite delivery method'
+        });
+    }
+};
+
+
 module.exports = {
     getEstadisticasCompras,
     getEstadisticasVentas,
     getTop5ProductosPorAnio,
     getTop5ClientesFacturas,
-    getTop5ProveedoresCompras
+    getTop5ProveedoresCompras,
+    getMatrizVentasCategorias,
+    getSeguimientoComprasClientes,
+    getSeguimientoComprasProveedores,
+    getPromedioRotacionInventario,
+    getMetodoEnvioFavorito
 };
