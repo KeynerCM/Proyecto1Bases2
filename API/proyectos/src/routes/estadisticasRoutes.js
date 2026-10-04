@@ -7,7 +7,8 @@ const {
     getTop5ClientesFacturas,
     getTop5ProveedoresCompras,
     getMatrizVentasCategorias,
-    getSeguimientoComprasClientes
+    getSeguimientoComprasClientes,
+    getSeguimientoComprasProveedores
 } = require('../controllers/estadisticasController');
 
 const router = express.Router();
@@ -39,6 +40,10 @@ router.get('/categorias/matriz', getMatrizVentasCategorias);
 
 // Seguimiento de compras a clientes
 router.get('/clientes/seguimiento', getSeguimientoComprasClientes);
+
+
+// Seguimiento de compras a proveedores
+router.get('/proveedores/seguimiento', getSeguimientoComprasProveedores);
 
 
 module.exports = router;

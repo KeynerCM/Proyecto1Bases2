@@ -259,6 +259,38 @@ const getSeguimientoComprasClientes = async (req, res) => {
 };
 
 
+// =====================================================
+// ESTADISTICAS 8 - SEGUIMIENTO DE COMPRAS A PROVEEDORES
+// =====================================================
+
+const getSeguimientoComprasProveedores = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .input('PageNumber', sql.Int, req.query.pageNumber || 1)
+            .input('Anio', sql.Int, req.query.anio || null)
+            .input('Mes', sql.Int, req.query.mes || null)
+            .input('Categoria', sql.NVarChar(100), req.query.categoria || null)
+            .input('Subcategoria', sql.NVarChar(100), req.query.subcategoria || null)
+            .execute('SeguimientoComprasProveedores');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo seguimiento de compras a proveedores:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving supplier purchase tracking'
+        });
+    }
+};
+
+
 module.exports = {
     getEstadisticasCompras,
     getEstadisticasVentas,
@@ -266,5 +298,6 @@ module.exports = {
     getTop5ClientesFacturas,
     getTop5ProveedoresCompras,
     getMatrizVentasCategorias,
-    getSeguimientoComprasClientes
+    getSeguimientoComprasClientes,
+    getSeguimientoComprasProveedores
 };

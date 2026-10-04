@@ -77,7 +77,56 @@ END;
 GO
 
 
+--PROCEDIMIENTO DE ESTADISTICAS 8
+
+CREATE OR ALTER PROCEDURE SeguimientoComprasProveedores
+    @PageNumber INT = 1,
+    @Anio INT = NULL,
+    @Mes INT = NULL,
+    @Categoria NVARCHAR(100) = NULL,
+    @Subcategoria NVARCHAR(100) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @RowsOfPage INT = 20;
+
+    SELECT
+        s.SupplierName AS Proveedor,
+        YEAR(po.OrderDate) AS Anio,
+        MONTH(po.OrderDate) AS Mes,
+        SUM(pol.OrderedOuters * pol.ExpectedUnitPricePerOuter) AS MontoTotal,
+        MIN(po.PurchaseOrderID) AS PrimeraOrden,
+        MIN(po.OrderDate) AS FechaPrimeraOrden,
+        MAX(po.PurchaseOrderID) AS UltimaOrden,
+        MAX(po.OrderDate) AS FechaUltimaOrden,
+        SUM(pol.OrderedOuters) AS CantidadTotal,
+        MIN(pol.OrderedOuters) AS CantidadMinima,
+        MAX(pol.OrderedOuters) AS CantidadMaxima
+    FROM syn_PurchaseOrders po
+    JOIN syn_Suppliers s ON po.SupplierID = s.SupplierID
+    JOIN syn_PurchaseOrderLines pol ON po.PurchaseOrderID = pol.PurchaseOrderID
+    WHERE
+        (@Anio IS NULL OR YEAR(po.OrderDate) = @Anio)
+        AND (@Mes IS NULL OR MONTH(po.OrderDate) = @Mes)
+        AND (@Categoria IS NULL OR pol.StockItemID IN (
+            SELECT sg.StockItemID FROM syn_StockItemStockGroups sg
+            JOIN syn_StockGroups g ON sg.StockGroupID = g.StockGroupID
+            WHERE g.StockGroupName LIKE '%' + @Categoria + '%'))
+        AND (@Subcategoria IS NULL OR pol.StockItemID IN (
+            SELECT sg.StockItemID FROM syn_StockItemStockGroups sg
+            JOIN syn_StockGroups g ON sg.StockGroupID = g.StockGroupID
+            WHERE g.StockGroupName LIKE '%' + @Subcategoria + '%'))
+    GROUP BY s.SupplierName, YEAR(po.OrderDate), MONTH(po.OrderDate)
+    ORDER BY s.SupplierName, Anio, Mes
+    OFFSET (@PageNumber - 1) * @RowsOfPage ROWS FETCH NEXT @RowsOfPage ROWS ONLY;
+END;
+GO
+
+
 EXEC MatrizVentasCategoriasPorAnio;
 EXEC SeguimientoComprasClientes @PageNumber = 1;
 EXEC SeguimientoComprasClientes @PageNumber = 1, @Anio = 2015, @Mes = 3, @Categoria = 'Clothing', @Subcategoria = 'T-Shirts';
+EXEC SeguimientoComprasProveedores @PageNumber = 1;
+EXEC SeguimientoComprasProveedores @PageNumber = 1, @Anio = 2014, @Mes = 6, @Categoria = 'Clothing', @Subcategoria = 'T-Shirts';
 GO

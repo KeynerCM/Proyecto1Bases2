@@ -46,3 +46,12 @@ CREATE SYNONYM dbo.syn_DeliveryMethods FOR Application.DeliveryMethods;
 DROP SYNONYM IF EXISTS dbo.syn_People;
 CREATE SYNONYM dbo.syn_People FOR Application.People;
 GO
+
+-- ESTADISTICAS
+
+DROP SYNONYM IF EXISTS dbo.syn_PurchaseOrders;
+CREATE SYNONYM dbo.syn_PurchaseOrders FOR Purchasing.PurchaseOrders;
+
+DROP SYNONYM IF EXISTS dbo.syn_PurchaseOrderLines;
+CREATE SYNONYM dbo.syn_PurchaseOrderLines FOR Purchasing.PurchaseOrderLines;
+GO
