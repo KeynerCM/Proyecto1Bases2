@@ -1,0 +1,111 @@
+.section {
+    width: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+.section h2 {
+    margin: 0 0 20px;
+
+    color: #263238;
+
+    font-size: 24px;
+}
+
+/* =========================
+   MATRIZ
+========================= */
+
+.tableContainer {
+    width: 100%;
+
+    overflow-x: auto;
+
+    background-color: white;
+
+    border: 1px solid #e0e6ed;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.matrix {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 14px;
+}
+
+.matrix th {
+    padding: 14px 16px;
+
+    background-color: #1976d2;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-align: right;
+
+    white-space: nowrap;
+}
+
+.matrix td {
+    padding: 12px 16px;
+
+    border-top: 1px solid #edf0f4;
+
+    color: #263238;
+
+    text-align: right;
+
+    white-space: nowrap;
+}
+
+.matrix th:first-child,
+.matrix td:first-child {
+    text-align: left;
+}
+
+.matrix td:first-child {
+    font-weight: 600;
+}
+
+.matrix tbody tr:hover {
+    background-color: #f5f7fb;
+}
+
+.total {
+    color: #1976d2 !important;
+
+    font-weight: 700;
+}
+
+/* =========================
+   ESTADOS
+========================= */
+
+.loading,
+.noResults {
+    color: #607d8b;
+
+    font-size: 14px;
+
+    padding: 20px 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .section {
+        padding: 16px;
+    }
+
+}

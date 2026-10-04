@@ -5,7 +5,8 @@ const {
     getEstadisticasVentas,
     getTop5ProductosPorAnio,
     getTop5ClientesFacturas,
-    getTop5ProveedoresCompras
+    getTop5ProveedoresCompras,
+    getMatrizVentasCategorias
 } = require('../controllers/estadisticasController');
 
 const router = express.Router();
@@ -29,6 +30,10 @@ router.get('/clientes/top5', getTop5ClientesFacturas);
 
 // Top 5 proveedores por compras
 router.get('/proveedores/top5', getTop5ProveedoresCompras);
+
+
+// Matriz de ventas por categoría y año
+router.get('/categorias/matriz', getMatrizVentasCategorias);
 
 
 module.exports = router;

@@ -200,10 +200,38 @@ const getTop5ProveedoresCompras = async (req, res) => {
 };
 
 
+// =====================================================
+// ESTADISTICAS 6 - MATRIZ DE VENTAS POR CATEGORIA Y AÑO
+// =====================================================
+
+const getMatrizVentasCategorias = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .execute('MatrizVentasCategoriasPorAnio');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo matriz de ventas por categoría:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving sales matrix by category'
+        });
+    }
+};
+
+
 module.exports = {
     getEstadisticasCompras,
     getEstadisticasVentas,
     getTop5ProductosPorAnio,
     getTop5ClientesFacturas,
-    getTop5ProveedoresCompras
+    getTop5ProveedoresCompras,
+    getMatrizVentasCategorias
 };
