@@ -9,6 +9,7 @@ export function NavBar({setSelectedSection}) {
                 <li> <button onClick={() => setSelectedSection('Proveedores')}>Proveedores</button></li>
                 <li> <button onClick={() => setSelectedSection('Inventarios')}>Inventarios</button></li>
                 <li> <button onClick={() => setSelectedSection('Ventas')}>Ventas</button></li>
+                <li> <button onClick={() => setSelectedSection('Estadísticas')}>Estadísticas</button></li>
             </ul>
         </nav>
     )

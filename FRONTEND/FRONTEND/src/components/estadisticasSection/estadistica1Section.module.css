@@ -1,0 +1,175 @@
+.section {
+    width: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+.section h2 {
+    margin: 0 0 20px;
+    color: #263238;
+    font-size: 24px;
+}
+
+/* =========================
+   FILTROS
+========================= */
+
+.filters {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.filters input {
+    flex: 1;
+    padding: 12px 14px;
+
+    border: 1px solid #d9e1ec;
+    border-radius: 10px;
+
+    background-color: white;
+    color: #263238;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.filters input:focus {
+    border-color: #1976d2;
+
+    box-shadow:
+        0 0 0 3px rgba(25, 118, 210, 0.12);
+}
+
+.filters input::placeholder {
+    color: #90a4ae;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.cards {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(280px, 1fr));
+
+    gap: 20px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+    padding: 20px;
+
+    background-color: white;
+
+    border: 1px solid #e0e6ed;
+
+    border-radius: 14px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.06);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.10);
+}
+
+.card h3 {
+    margin: 0 0 10px;
+
+    color: #263238;
+
+    font-size: 18px;
+}
+
+.card > p {
+    margin: 0 0 18px;
+
+    color: #607d8b;
+
+    font-size: 14px;
+}
+
+/* =========================
+   ESTADISTICAS
+========================= */
+
+.statRow {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 12px 0;
+
+    border-top: 1px solid #edf0f4;
+
+    color: #607d8b;
+
+    font-size: 14px;
+}
+
+.statRow strong {
+    color: #1976d2;
+
+    font-size: 15px;
+
+    text-align: right;
+}
+
+/* =========================
+   LOADING / SIN RESULTADOS
+========================= */
+
+.loading,
+.noResults {
+    color: #607d8b;
+
+    font-size: 14px;
+
+    padding: 20px 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .section {
+        padding: 16px;
+    }
+
+    .filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+}

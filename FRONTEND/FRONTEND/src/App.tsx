@@ -6,6 +6,8 @@ import {CustomersSection} from './components/customersSection/customersSection'
 import {InventorySection} from './components/inventorySection/inventorySection'
 import {SalesSection} from './components/salesSection/salesSection'
 import {ProveedoresSection} from './components/proveedoresSection/proveedoresSection'
+import { EstadisticasSection } from './components/estadisticasSection/estadisticasSection'
+
 export function App() {
   const [selectedItem, setSelectedSection] = useState('Inicio')
   const sections = {
@@ -13,7 +15,8 @@ export function App() {
     'Clientes': <CustomersSection />,
     'Proveedores': <ProveedoresSection />,
     'Inventarios': <InventorySection />,
-    'Ventas': <SalesSection />
+    'Ventas': <SalesSection />,
+    'Estadísticas': <EstadisticasSection />
   }
   return (
     <div>
