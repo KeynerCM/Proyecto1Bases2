@@ -1,0 +1,72 @@
+.estadisticasSection {
+    width: 100%;
+    min-height: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    background-color: transparent;
+}
+
+.estadisticasNav {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 6px;
+
+    box-sizing: border-box;
+
+    overflow-x: auto;
+}
+
+.estadisticaButton,
+.activeButton {
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition: all 0.2s ease;
+}
+
+.estadisticaButton {
+    background-color: transparent;
+
+    border: 1px solid #53f892;
+
+    color: #263238;
+}
+
+.estadisticaButton:hover {
+    transform: translateY(-2px);
+
+    border-color: #1976d2;
+
+    box-shadow: 0 5px 12px rgba(117, 247, 30, 0.35);
+}
+
+.activeButton {
+    background-color: #1976d2;
+
+    border: 1px solid #1976d2;
+
+    color: white;
+
+    box-shadow: 0 5px 12px rgba(25, 118, 210, 0.25);
+}
+
+.estadisticaContent {
+    width: 100%;
+}
