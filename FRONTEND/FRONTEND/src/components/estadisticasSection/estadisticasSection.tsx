@@ -6,6 +6,7 @@ import Estadistica3Section from './estadistica3Section';
 import Estadistica4Section from './estadistica4Section';
 import Estadistica5Section from './estadistica5Section';
 import Estadistica6Section from './estadistica6Section';
+import Estadistica7Section from './estadistica7Section';
 
 import styles from './estadisticasSection.module.css';
 
@@ -32,6 +33,9 @@ export function EstadisticasSection() {
             case 6:
                 return <Estadistica6Section />;
 
+            case 7:
+                return <Estadistica7Section />;
+
             default:
                 return <Estadistica1Section />;
         }
@@ -41,7 +45,7 @@ export function EstadisticasSection() {
         <section className={styles.estadisticasSection}>
 
             <div className={styles.estadisticasNav}>
-                {[1, 2, 3, 4, 5, 6].map((numero) => (
+                {[1, 2, 3, 4, 5, 6, 7].map((numero) => (
                     <button
                         key={numero}
                         className={

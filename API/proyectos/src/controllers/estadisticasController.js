@@ -227,11 +227,44 @@ const getMatrizVentasCategorias = async (req, res) => {
 };
 
 
+// =====================================================
+// ESTADISTICAS 7 - SEGUIMIENTO DE COMPRAS A CLIENTES
+// =====================================================
+
+const getSeguimientoComprasClientes = async (req, res) => {
+    try {
+        const pool = await poolPromise;
+
+        const result = await pool
+            .request()
+            .input('PageNumber', sql.Int, req.query.pageNumber || 1)
+            .input('Anio', sql.Int, req.query.anio || null)
+            .input('Mes', sql.Int, req.query.mes || null)
+            .input('Categoria', sql.NVarChar(100), req.query.categoria || null)
+            .input('Subcategoria', sql.NVarChar(100), req.query.subcategoria || null)
+            .execute('SeguimientoComprasClientes');
+
+        res.status(200).json(result.recordset);
+
+    } catch (error) {
+        console.error(
+            'Error obteniendo seguimiento de compras a clientes:',
+            error
+        );
+
+        res.status(500).json({
+            message: 'Error retrieving customer purchase tracking'
+        });
+    }
+};
+
+
 module.exports = {
     getEstadisticasCompras,
     getEstadisticasVentas,
     getTop5ProductosPorAnio,
     getTop5ClientesFacturas,
     getTop5ProveedoresCompras,
-    getMatrizVentasCategorias
+    getMatrizVentasCategorias,
+    getSeguimientoComprasClientes
 };
