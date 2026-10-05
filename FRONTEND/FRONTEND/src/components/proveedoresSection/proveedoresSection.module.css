@@ -1,133 +1,147 @@
+/* =========================
+   VARIABLES DE DISEÑO
+   (definidas en los contenedores raíz para que
+   funcionen también con CSS Modules)
+========================= */
+
+.proveedoresSection,
+.modalOverlay {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-soft: #eff6ff;
+    --primary-ring: rgba(37, 99, 235, 0.18);
+
+    --text-strong: #0f172a;
+    --text: #334155;
+    --text-muted: #64748b;
+    --text-subtle: #94a3b8;
+
+    --surface: #ffffff;
+    --surface-alt: #f8fafc;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 16px;
+
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+    --shadow-hover: 0 10px 24px rgba(15, 23, 42, 0.10);
+    --shadow-modal: 0 24px 48px rgba(15, 23, 42, 0.20);
+}
+
+/* =========================
+   SECCIÓN PRINCIPAL
+========================= */
+
 .proveedoresSection {
     width: 100%;
     min-height: 100%;
-    padding: 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(16px, 3vw, 32px);
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: clamp(16px, 2.5vw, 28px);
 
     background-color: transparent;
 }
 
-
 /* =========================
-   FILTRO / BUSCADOR
+   FILTROS (BUSCADOR + CATEGORÍA)
 ========================= */
 
 .filterContainer {
     width: 100%;
-
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
+}
+
+.searchInput,
+.categorySelect {
+    padding: 12px 16px;
+    box-sizing: border-box;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--surface);
+    box-shadow: var(--shadow-sm);
+
+    color: var(--text-strong);
+    font-size: 15px;
+    font-family: inherit;
+
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .searchInput {
-    width: 100%;
-
-    padding: 13px 18px;
-
-    box-sizing: border-box;
-
-    border: 1px solid #d9e1ec;
-    border-radius: 10px;
-
-    background-color: #ffffff;
-
-    color: #263238;
-    font-size: 15px;
-
-    outline: none;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    flex: 1;
+    min-width: 0;
 }
 
 .searchInput::placeholder {
-    color: #9aa7b5;
+    color: var(--text-subtle);
 }
-
-.searchInput:focus {
-    border-color: #1976d2;
-
-    box-shadow:
-        0 0 0 3px rgba(36, 61, 97, 0.781);
-}
-
-
-/* =========================
-   FILTRO DE CATEGORÍA
-========================= */
 
 .categorySelect {
-    width: 260px;
-
-    padding: 13px 18px;
-
-    box-sizing: border-box;
-
-    border: 1px solid #d9e1ec;
-    border-radius: 10px;
-
-    background-color: #ffffff;
-
-    color: #263238;
-    font-size: 15px;
-
-    outline: none;
-
+    flex: 0 0 260px;
+    padding-right: 42px;
     cursor: pointer;
 
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    /* Flecha personalizada */
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
 }
 
+.searchInput:hover,
+.categorySelect:hover {
+    border-color: var(--border-strong);
+}
+
+.searchInput:focus,
 .categorySelect:focus {
-    border-color: #1976d2;
-
-    box-shadow:
-        0 0 0 3px rgba(36, 61, 97, 0.781);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-ring);
 }
-
 
 /* =========================
-   TARJETAS DE PROVEEDORES
+   GRID DE PROVEEDORES
 ========================= */
 
 .proveedoresCards {
     width: 100%;
-
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fill, minmax(250px, 1fr));
-
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: clamp(12px, 2vw, 20px);
 }
 
-
 /* =========================
-   PROVIDER CARD
+   PROVEEDOR CARD
 ========================= */
 
 .proveedorCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
     padding: 20px;
-
-    background-color: transparent;
-
-    border: 1px solid #53f892;
-    border-radius: 14px;
-
     box-sizing: border-box;
 
-    box-shadow:
-        0 3px 10px rgba(38, 50, 56, 0.06);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
 
     cursor: pointer;
+    overflow: hidden;
 
     transition:
         transform 0.2s ease,
@@ -135,87 +149,88 @@
         border-color 0.2s ease;
 }
 
+/* Barra de acento superior que aparece en hover */
+.proveedorCard::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background-color: var(--primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
 .proveedorCard:hover {
     transform: translateY(-3px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-hover);
+}
 
-    border-color: #1976d2;
+.proveedorCard:hover::before {
+    transform: scaleX(1);
+}
 
-    box-shadow:
-        0 7px 18px rgba(117, 247, 30, 0.74);
+.proveedorCard:focus-visible {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-ring);
 }
 
 .proveedorCard h3 {
-    margin: 0 0 14px 0;
-
-    color: #000000;
-
-    font-size: 18px;
+    margin: 0 0 12px 0;
+    color: var(--text-strong);
+    font-size: 17px;
     font-weight: 600;
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
 }
 
 .proveedorCard p {
-    margin: 7px 0;
-
-    color: #607d8b;
-
+    margin: 8px 0;
+    color: var(--text-muted);
     font-size: 14px;
+    line-height: 1.45;
+
+    overflow-wrap: anywhere;
 }
 
 .proveedorCard p:first-of-type {
-    color: #1976d2;
-
+    color: var(--primary);
     font-weight: 500;
 }
 
-
-/* =========================
-   LABEL DE LOS DATOS
-========================= */
-
+/* Label de los datos dentro de la card */
 .proveedorCard p span {
     display: block;
+    margin-bottom: 2px;
 
-    margin-bottom: 3px;
-
-    color: #90a4ae;
-
+    color: var(--text-subtle);
     font-size: 11px;
-
     font-weight: 600;
-
     text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-
 /* =========================
-   LOADING
+   LOADING / SIN RESULTADOS
 ========================= */
 
-.loading {
-    padding: 40px 0;
-
-    text-align: center;
-
-    color: #607d8b;
-
-    font-size: 15px;
-}
-
-
-/* =========================
-   MENSAJE SIN RESULTADOS
-========================= */
-
+.loading,
 .emptyMessage {
     padding: 40px 0;
-
     text-align: center;
-
-    color: #607d8b;
-
+    color: var(--text-muted);
     font-size: 15px;
 }
 
+.emptyMessage {
+    padding: 48px 20px;
+    background-color: var(--surface);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-lg);
+}
 
 /* =========================
    MODAL
@@ -224,16 +239,17 @@
 .modalOverlay {
     position: fixed;
     inset: 0;
+    z-index: 1000;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     padding: 20px;
+    box-sizing: border-box;
 
-    background-color: rgba(38, 50, 56, 0.55);
-
-    z-index: 1000;
+    background-color: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(3px);
 
     animation: fadeIn 0.2s ease;
 }
@@ -242,38 +258,34 @@
     position: relative;
 
     width: 100%;
-    max-width: 650px;
+    max-width: 680px;
     max-height: 90vh;
+    max-height: 90dvh;
 
-    padding: 30px;
-
+    padding: 32px;
     box-sizing: border-box;
 
-    background-color: #ffffff;
-
-    border-radius: 16px;
-
-    box-shadow:
-        0 15px 40px rgba(38, 50, 56, 0.25);
+    background-color: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-modal);
 
     overflow-y: auto;
+    overscroll-behavior: contain;
 
     animation: slideUp 0.25s ease;
 }
 
-
 /* =========================
-   CLOSE BUTTON
+   BOTÓN CERRAR
 ========================= */
 
 .closeButton {
     position: absolute;
+    top: 16px;
+    right: 16px;
 
-    top: 15px;
-    right: 15px;
-
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
 
     display: flex;
     justify-content: center;
@@ -281,186 +293,134 @@
 
     border: none;
     border-radius: 50%;
+    background-color: var(--surface-alt);
+    color: var(--text-muted);
 
-    background-color: #f1f4f8;
-
-    color: #455a64;
-
-    font-size: 24px;
+    font-size: 22px;
     line-height: 1;
 
     cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .closeButton:hover {
-    background-color: #1976d2;
-
-    color: #ffffff;
+    background-color: var(--primary-soft);
+    color: var(--primary);
 }
 
+.closeButton:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--primary-ring);
+}
 
 /* =========================
-   TITLE
+   TÍTULOS
 ========================= */
 
 .proveedorDetails h2 {
-    margin: 0 45px 25px 0;
-
-    color: #263238;
-
+    margin: 0 48px 24px 0;
+    color: var(--text-strong);
     font-size: 24px;
     font-weight: 600;
+    line-height: 1.25;
+
+    overflow-wrap: anywhere;
 }
-
-
-/* =========================
-   SECTION TITLE
-========================= */
 
 .sectionTitle {
-    margin: 25px 0 12px;
-
-    color: #1976d2;
-
-    font-size: 15px;
-    font-weight: 600;
-
-    border-bottom: 1px solid #e1e7ef;
-
+    margin: 28px 0 12px;
     padding-bottom: 8px;
+
+    color: var(--text-strong);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+
+    border-bottom: 1px solid var(--border);
 }
 
-
 /* =========================
-   DETAILS
+   DETALLES
 ========================= */
 
 .detailsContainer {
     display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 15px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
 }
 
 .detailItem {
     display: flex;
     flex-direction: column;
+    gap: 4px;
+    min-width: 0;
 
-    gap: 6px;
+    padding: 14px 16px;
 
-    padding: 15px;
-
-    background-color: #f5f7fb;
-
-    border-radius: 10px;
-
-    border-left: 4px solid #1976d2;
+    background-color: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 }
 
 .detailItem span {
-    color: #78909c;
-
-    font-size: 12px;
-    font-weight: 500;
-
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .detailItem strong {
-    color: #37474f;
-
+    color: var(--text-strong);
     font-size: 14px;
     font-weight: 600;
+
+    overflow-wrap: anywhere;
 }
 
 .detailItem a {
-    color: #1976d2;
-
+    color: var(--primary);
     font-size: 14px;
     font-weight: 600;
-
     text-decoration: none;
+
+    overflow-wrap: anywhere;
 }
 
 .detailItem a:hover {
     text-decoration: underline;
 }
 
-
 /* =========================
-   ADDRESSES
+   DIRECCIÓN, BANCO Y COORDENADAS
 ========================= */
 
-.addressCard {
-    padding: 15px;
-
-    background-color: #f5f7fb;
-
-    border-radius: 10px;
-
-    border-left: 4px solid #607d8b;
-}
-
-.addressCard p {
-    margin: 5px 0;
-
-    color: #455a64;
-
-    font-size: 14px;
-}
-
-
-/* =========================
-   BANK INFORMATION
-========================= */
-
-.bankCard {
-    padding: 15px;
-
-    background-color: #f5f7fb;
-
-    border-radius: 10px;
-
-    border-left: 4px solid #53f892;
-}
-
-.bankCard p {
-    margin: 6px 0;
-
-    color: #455a64;
-
-    font-size: 14px;
-}
-
-
-/* =========================
-   COORDINATES
-========================= */
-
+.addressCard,
+.bankCard,
 .coordinatesCard {
-    padding: 15px;
+    padding: 14px 16px;
 
-    background-color: #f5f7fb;
-
-    border-radius: 10px;
-
-    border-left: 4px solid #1976d2;
+    background-color: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 }
 
+.addressCard p,
+.bankCard p,
 .coordinatesCard p {
-    margin: 6px 0;
-
-    color: #455a64;
-
+    margin: 5px 0;
+    color: var(--text);
     font-size: 14px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
 }
 
+/* Números de cuenta / IBAN más legibles */
+.bankCard p {
+    font-variant-numeric: tabular-nums;
+}
 
 /* =========================
    MAPA
@@ -468,137 +428,151 @@
 
 .mapContainer {
     display: block;
-
     width: 100%;
     height: 250px;
 
     overflow: hidden;
-
-    border-radius: 12px;
-
-    border: 1px solid #e1e7ef;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 
     cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .mapContainer:hover {
     transform: translateY(-2px);
-
-    box-shadow:
-        0 5px 15px rgba(38, 50, 56, 0.15);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-hover);
 }
 
 .mapContainer iframe {
     width: 100%;
     height: 100%;
-
     border: none;
-
     pointer-events: none;
 }
 
 .mapHint {
     margin: 8px 0 0;
-
-    color: #607d8b;
-
+    color: var(--text-muted);
     font-size: 13px;
-
     text-align: center;
 }
 
-
 /* =========================
-   LOADING
-========================= */
-
-.loading {
-    padding: 40px 0;
-
-    text-align: center;
-
-    color: #607d8b;
-
-    font-size: 15px;
-}
-
-
-/* =========================
-   ANIMATIONS
+   ANIMACIONES
 ========================= */
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 @keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes sheetUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+}
 
 /* =========================
    RESPONSIVE
 ========================= */
 
-@media (max-width: 700px) {
-
-    .proveedoresSection {
-        padding: 18px;
-
-        gap: 18px;
-    }
-
-    .filterContainer {
-        flex-direction: column;
-
-        align-items: stretch;
-    }
-
-    .searchInput {
-        max-width: 100%;
-    }
-
+/* Tablets */
+@media (max-width: 900px) {
     .categorySelect {
-        width: 100%;
+        flex-basis: 220px;
     }
 
-    .proveedoresCards {
-        grid-template-columns: 1fr;
+    .proveedorDetails {
+        padding: 26px;
+    }
+
+    .mapContainer {
+        height: 220px;
     }
 }
 
+/* Móviles grandes: filtros apilados */
+@media (max-width: 700px) {
+    .filterContainer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
 
+    .categorySelect {
+        flex: none;
+        width: 100%;
+    }
+
+    /* 16px evita el zoom automático en iOS */
+    .searchInput,
+    .categorySelect {
+        font-size: 16px;
+    }
+}
+
+/* Móviles */
 @media (max-width: 600px) {
+    .proveedoresCards {
+        grid-template-columns: 1fr;
+    }
+
+    .proveedorCard {
+        padding: 16px;
+    }
+
+    .proveedorCard h3 {
+        font-size: 16px;
+    }
+
+    /* Modal tipo "bottom sheet" */
+    .modalOverlay {
+        align-items: flex-end;
+        padding: 0;
+    }
 
     .proveedorDetails {
-        padding: 22px;
+        max-width: 100%;
+        max-height: 92vh;
+        max-height: 92dvh;
+        padding: 22px 18px calc(22px + env(safe-area-inset-bottom));
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        animation: sheetUp 0.28s ease;
+    }
 
-        max-height: 95vh;
+    .proveedorDetails h2 {
+        font-size: 20px;
+        margin-bottom: 18px;
     }
 
     .detailsContainer {
         grid-template-columns: 1fr;
     }
 
-    .proveedorDetails h2 {
-        font-size: 20px;
+    .mapContainer {
+        height: 200px;
+    }
+}
+
+/* Accesibilidad: menos movimiento si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+    .proveedorCard,
+    .proveedorCard::before,
+    .mapContainer,
+    .modalOverlay,
+    .proveedorDetails {
+        transition: none;
+        animation: none;
+    }
+
+    .proveedorCard:hover,
+    .mapContainer:hover {
+        transform: none;
     }
 }
