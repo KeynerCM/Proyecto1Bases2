@@ -9,9 +9,9 @@ import {ProveedoresSection} from './components/proveedoresSection/proveedoresSec
 import { EstadisticasSection } from './components/estadisticasSection/estadisticasSection'
 
 export function App() {
-  const [selectedItem, setSelectedSection] = useState('Inicio')
+  const [selectedItem, setSelectedSection] = useState('Clientes')
   const sections = {
-    'Inicio': <InicioSection />,
+    /*'Inicio': <InicioSection />,*/
     'Clientes': <CustomersSection />,
     'Proveedores': <ProveedoresSection />,
     'Inventarios': <InventorySection />,
