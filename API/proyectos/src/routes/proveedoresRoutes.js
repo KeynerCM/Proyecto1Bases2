@@ -1,19 +1,49 @@
 const express = require('express');
 
-const {
-    getProveedores,
-    getProveedorSpecific
-} = require('../controllers/proveedoresController');
-
 const router = express.Router();
 
+const validateApiKey = require('../middleware/apiKey');
 
-// GET /api/proveedores
+const {
+    getProveedores,
+    getProveedorSpecific,
+    createProveedor,
+    updateProveedor,
+    deleteProveedor
+} = require('../controllers/proveedoresController');
+
+
+// GET /api/proveedores?nombre=...&categoria=...
+// (sin API key, igual que antes, para no romper el frontend)
 router.get('/', getProveedores);
 
 
 // GET /api/proveedores/specific?name=...
 router.get('/specific', getProveedorSpecific);
+
+
+// POST /api/proveedores
+router.post(
+    '/',
+    validateApiKey,
+    createProveedor
+);
+
+
+// PUT /api/proveedores/:id
+router.put(
+    '/:id',
+    validateApiKey,
+    updateProveedor
+);
+
+
+// DELETE /api/proveedores/:id
+router.delete(
+    '/:id',
+    validateApiKey,
+    deleteProveedor
+);
 
 
 module.exports = router;

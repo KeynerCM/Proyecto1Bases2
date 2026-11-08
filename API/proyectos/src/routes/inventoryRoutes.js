@@ -7,25 +7,59 @@ const validateApiKey = require('../middleware/apiKey');
 const {
     getInventoryGeneralData,
     getInventorySpecificData,
-    getStockGroups
+    getStockGroups,
+    createInventoryItem,
+    updateInventoryItem,
+    deleteInventoryItem
 } = require('../controllers/inventoryController');
 
+
+// GET /api/inventory?pageNumber=1&name=...&groupId=...&minQuantity=...&maxQuantity=...
 router.get(
     '/',
     validateApiKey,
-    getInventoryGeneralData,
+    getInventoryGeneralData
 );
 
+
+// GET /api/inventory/specific?id=...
 router.get(
     '/specific',
     validateApiKey,
-    getInventorySpecificData,
+    getInventorySpecificData
 );
 
+
+// GET /api/inventory/groups
 router.get(
     '/groups',
     validateApiKey,
-    getStockGroups,
+    getStockGroups
 );
 
-module.exports = router
+
+// POST /api/inventory
+router.post(
+    '/',
+    validateApiKey,
+    createInventoryItem
+);
+
+
+// PUT /api/inventory/:id
+router.put(
+    '/:id',
+    validateApiKey,
+    updateInventoryItem
+);
+
+
+// DELETE /api/inventory/:id
+router.delete(
+    '/:id',
+    validateApiKey,
+    deleteInventoryItem
+);
+
+
+module.exports = router;

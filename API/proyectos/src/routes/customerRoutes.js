@@ -6,19 +6,51 @@ const validateApiKey = require('../middleware/apiKey');
 
 const {
     getCustomerGeneralData,
-    getCustomerSpecificData
+    getCustomerSpecificData,
+    createCustomer,
+    updateCustomer,
+    deleteCustomer
 } = require('../controllers/customerController');
 
+
+// GET /api/customers?pageNumber=1&name=...
 router.get(
     '/',
     validateApiKey,
-    getCustomerGeneralData,
+    getCustomerGeneralData
 );
 
+
+// GET /api/customers/specific?name=...
 router.get(
     '/specific',
     validateApiKey,
-    getCustomerSpecificData,
+    getCustomerSpecificData
 );
 
-module.exports = router
+
+// POST /api/customers
+router.post(
+    '/',
+    validateApiKey,
+    createCustomer
+);
+
+
+// PUT /api/customers/:id
+router.put(
+    '/:id',
+    validateApiKey,
+    updateCustomer
+);
+
+
+// DELETE /api/customers/:id
+router.delete(
+    '/:id',
+    validateApiKey,
+    deleteCustomer
+);
+
+
+module.exports = router;
