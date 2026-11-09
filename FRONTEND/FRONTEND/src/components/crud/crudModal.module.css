@@ -1,0 +1,691 @@
+/* =========================
+   VARIABLES DE DISEÑO
+   (las mismas de customersSection.module.css)
+========================= */
+
+.modalOverlay,
+.selectionBanner,
+.successNotice,
+.selectableUpdate,
+.selectableDelete,
+.activeAction {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-soft: #eff6ff;
+    --primary-ring: rgba(37, 99, 235, 0.18);
+
+    --success: #16a34a;
+    --success-hover: #15803d;
+    --success-soft: #f0fdf4;
+
+    --danger: #dc2626;
+    --danger-hover: #b91c1c;
+    --danger-soft: #fef2f2;
+
+    --warning-soft: #fffbeb;
+    --warning-border: #fcd34d;
+
+    --text-strong: #0f172a;
+    --text: #334155;
+    --text-muted: #64748b;
+    --text-subtle: #94a3b8;
+
+    --surface: #ffffff;
+    --surface-alt: #f8fafc;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 16px;
+
+    --shadow-modal: 0 24px 48px rgba(15, 23, 42, 0.20);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    background-color: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(3px);
+
+    animation: fadeIn 0.2s ease;
+}
+
+.crudCard {
+    position: relative;
+
+    width: 100%;
+    max-width: 720px;
+    max-height: 90vh;
+    max-height: 90dvh;
+
+    padding: 32px;
+    box-sizing: border-box;
+
+    background-color: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-modal);
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    animation: slideUp 0.25s ease;
+}
+
+.crudCardSmall {
+    max-width: 460px;
+}
+
+.crudCard h2 {
+    margin: 0 48px 8px 0;
+    color: var(--text-strong);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.subtitle {
+    margin: 0 0 8px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.closeButton {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    border-radius: 50%;
+    background-color: var(--surface-alt);
+    color: var(--text-muted);
+
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.closeButton:hover {
+    background-color: var(--primary-soft);
+    color: var(--primary);
+}
+
+.closeButton:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--primary-ring);
+}
+
+.sectionTitle {
+    margin: 28px 0 12px;
+    padding-bottom: 8px;
+
+    color: var(--text-strong);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+
+    border-bottom: 1px solid var(--border);
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.fullWidth {
+    grid-column: 1 / -1;
+}
+
+.fieldLabel {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.requiredMark {
+    color: var(--danger);
+    font-style: normal;
+}
+
+.input {
+    width: 100%;
+    padding: 10px 12px;
+    box-sizing: border-box;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--surface);
+
+    color: var(--text-strong);
+    font-size: 14px;
+    font-family: inherit;
+
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input::placeholder {
+    color: var(--text-subtle);
+}
+
+.input:hover {
+    border-color: var(--border-strong);
+}
+
+.input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-ring);
+}
+
+textarea.input {
+    resize: vertical;
+    min-height: 72px;
+}
+
+.fieldHint {
+    color: var(--text-subtle);
+    font-size: 12px;
+}
+
+.fieldError {
+    color: var(--danger);
+    font-size: 12px;
+}
+
+.checkboxField {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    background-color: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    color: var(--text);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.checkboxField input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.checkboxGroup {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+}
+
+/* =========================
+   BUSCADOR DE CATÁLOGO
+========================= */
+
+.searchWrapper {
+    position: relative;
+}
+
+.searchWrapper .input {
+    padding-right: 36px;
+}
+
+.clearSearch {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+
+    width: 24px;
+    height: 24px;
+
+    border: none;
+    border-radius: 50%;
+    background-color: var(--surface-alt);
+    color: var(--text-muted);
+
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.clearSearch:hover {
+    background-color: var(--danger-soft);
+    color: var(--danger);
+}
+
+.searchResults {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 10;
+
+    max-height: 220px;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    overflow-y: auto;
+
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.searchResults button {
+    width: 100%;
+    padding: 8px 10px;
+
+    border: none;
+    border-radius: 6px;
+    background: none;
+
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.searchResults button:hover {
+    background-color: var(--primary-soft);
+    color: var(--primary);
+}
+
+.searchInfo {
+    padding: 8px 10px;
+    color: var(--text-subtle);
+    font-size: 13px;
+}
+
+/* =========================
+   LÍNEAS DE FACTURA
+========================= */
+
+.linesList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lineRow {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr) minmax(0, 1.2fr) auto;
+    gap: 10px;
+    align-items: end;
+
+    padding: 12px;
+    background-color: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.removeLineButton {
+    height: 40px;
+    padding: 0 12px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--surface);
+    color: var(--danger);
+
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.removeLineButton:hover:not(:disabled) {
+    background-color: var(--danger-soft);
+    border-color: var(--danger);
+}
+
+.removeLineButton:disabled {
+    color: var(--text-subtle);
+    cursor: not-allowed;
+}
+
+.addLineButton {
+    align-self: flex-start;
+    padding: 9px 16px;
+
+    border: 1px dashed var(--primary);
+    border-radius: var(--radius-sm);
+    background-color: var(--primary-soft);
+    color: var(--primary);
+
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.addLineButton:hover {
+    background-color: #dbeafe;
+}
+
+.linesTotal {
+    margin: 4px 0 0;
+    color: var(--text);
+    font-size: 14px;
+    text-align: right;
+}
+
+.linesTotal strong {
+    color: var(--text-strong);
+    font-size: 16px;
+}
+
+.readOnlyValue {
+    padding: 10px 12px;
+    background-color: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-strong);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* =========================
+   MENSAJES
+========================= */
+
+.loading {
+    padding: 40px 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 15px;
+}
+
+.errorBox,
+.warningBox {
+    margin: 20px 0 0;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.errorBox {
+    background-color: var(--danger-soft);
+    border: 1px solid #fecaca;
+    color: var(--danger-hover);
+}
+
+.warningBox {
+    background-color: var(--warning-soft);
+    border: 1px solid var(--warning-border);
+    color: #92400e;
+}
+
+.confirmText {
+    margin: 16px 0 0;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.confirmText strong {
+    color: var(--text-strong);
+    overflow-wrap: anywhere;
+}
+
+/* =========================
+   BOTONES DEL FORMULARIO
+========================= */
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.cancelButton,
+.createButton,
+.updateButton,
+.deleteButton {
+    min-height: 42px;
+    padding: 10px 20px;
+
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.cancelButton {
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+.cancelButton:hover:not(:disabled) {
+    background-color: var(--surface-alt);
+}
+
+.createButton,
+.updateButton,
+.deleteButton {
+    border: none;
+    color: #ffffff;
+}
+
+.createButton { background-color: var(--success); }
+.createButton:hover:not(:disabled) { background-color: var(--success-hover); }
+
+.updateButton { background-color: var(--primary); }
+.updateButton:hover:not(:disabled) { background-color: var(--primary-hover); }
+
+.deleteButton { background-color: var(--danger); }
+.deleteButton:hover:not(:disabled) { background-color: var(--danger-hover); }
+
+.createButton:hover:not(:disabled),
+.updateButton:hover:not(:disabled),
+.deleteButton:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.cancelButton:disabled,
+.createButton:disabled,
+.updateButton:disabled,
+.deleteButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.cancelButton:focus-visible,
+.createButton:focus-visible,
+.updateButton:focus-visible,
+.deleteButton:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--primary-ring);
+}
+
+/* =========================
+   MODO SELECCIÓN EN LAS SECCIONES
+========================= */
+
+.selectionBanner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.selectionBanner button {
+    padding: 6px 14px;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: inherit;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.bannerUpdate {
+    background-color: var(--primary-soft);
+    border: 1px solid #bfdbfe;
+    color: var(--primary-hover);
+}
+
+.bannerDelete {
+    background-color: var(--danger-soft);
+    border: 1px solid #fecaca;
+    color: var(--danger-hover);
+}
+
+/* Las cards se resaltan mientras se elige cuál editar o eliminar */
+.selectableUpdate > *:hover {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.selectableDelete > *:hover {
+    outline: 2px solid var(--danger);
+    outline-offset: 2px;
+}
+
+/* Botón de la barra de acciones que está activo */
+.activeAction {
+    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.25);
+}
+
+.successNotice {
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    background-color: var(--success-soft);
+    border: 1px solid #bbf7d0;
+    color: var(--success-hover);
+    font-size: 14px;
+    font-weight: 500;
+    animation: fadeIn 0.2s ease;
+}
+
+/* =========================
+   ANIMACIONES
+========================= */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sheetUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+    .modalOverlay {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .crudCard {
+        max-width: 100%;
+        max-height: 92vh;
+        max-height: 92dvh;
+        padding: 22px 18px calc(22px + env(safe-area-inset-bottom));
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        animation: sheetUp 0.28s ease;
+    }
+
+    .crudCard h2 {
+        font-size: 20px;
+    }
+
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .input {
+        font-size: 16px; /* evita el zoom automático en iOS */
+    }
+
+    .lineRow {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .lineRow > :first-child {
+        grid-column: 1 / -1;
+    }
+
+    .formActions {
+        flex-direction: column-reverse;
+    }
+
+    .formActions button {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modalOverlay,
+    .crudCard,
+    .successNotice {
+        animation: none;
+    }
+}

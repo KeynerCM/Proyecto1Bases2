@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./invoiceDetails.module.css";
 import { StockItemDetails } from "../stockItemDetails/stockItemDetails";
 import { CustomerDetails } from "../customerDetails/customerDetails";
+import { apiRequest } from "../crud/apiClient";
 
 type InvoiceHeader = {
     InvoiceID: number;
@@ -41,20 +42,9 @@ export function InvoiceDetails({ invoiceId, onClose }: InvoiceDetailsProps) {
     useEffect(() => {
         const getInvoiceDetails = async () => {
             try {
-                const response = await fetch(
-                    `http://localhost:3000/api/sales/specific?id=${invoiceId}`,
-                    {
-                        headers: {
-                            "x-api-key": "6ef7908d83e853df10583389fd0279f67196882d4614da87f9b732330c94bab4",
-                        },
-                    }
+                const data = await apiRequest<{ header: InvoiceHeader; lines: InvoiceLine[] }>(
+                    `/sales/specific?id=${invoiceId}`
                 );
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener los detalles de la factura");
-                }
-
-                const data = await response.json();
 
                 // El endpoint devuelve { header, lines }
                 setInvoiceHeader(data.header);

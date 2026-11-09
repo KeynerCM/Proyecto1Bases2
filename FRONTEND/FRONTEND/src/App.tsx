@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import './App.css'
 import { NavBar } from './components/navBar/NavBar'
-import {InicioSection} from './components/InicioSection/InicioSection'
+// import {InicioSection} from './components/InicioSection/InicioSection'
 import {CustomersSection} from './components/customersSection/customersSection'
 import {InventorySection} from './components/inventorySection/inventorySection'
 import {SalesSection} from './components/salesSection/salesSection'
@@ -10,7 +10,7 @@ import { EstadisticasSection } from './components/estadisticasSection/estadistic
 
 export function App() {
   const [selectedItem, setSelectedSection] = useState('Clientes')
-  const sections = {
+  const sections: Record<string, ReactNode> = {
     /*'Inicio': <InicioSection />,*/
     'Clientes': <CustomersSection />,
     'Proveedores': <ProveedoresSection />,
@@ -20,7 +20,7 @@ export function App() {
   }
   return (
     <div>
-      <NavBar setSelectedSection={setSelectedSection} />
+      <NavBar selectedSection={selectedItem} setSelectedSection={setSelectedSection} />
       <main className="App">
         <h1 className="heading">{selectedItem}</h1>
         {sections[selectedItem]}

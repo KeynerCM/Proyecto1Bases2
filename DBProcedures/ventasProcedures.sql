@@ -36,7 +36,9 @@ AS
 BEGIN
     -- Encabezado de la factura
     SELECT i.InvoiceID, i.CustomerID, c.CustomerName, d.DeliveryMethodName, i.CustomerPurchaseOrderNumber,
-    cp.FullName AS ContactPerson, sp.FullName AS Salesperson, i.InvoiceDate, i.DeliveryInstructions
+    cp.FullName AS ContactPerson, sp.FullName AS Salesperson, i.InvoiceDate, i.DeliveryInstructions,
+    -- Para el formulario de edición
+    i.DeliveryMethodID, i.SalespersonPersonID, i.PackedByPersonID, i.Comments
 
     FROM syn_Invoices i
     INNER JOIN syn_Customers c
@@ -59,7 +61,6 @@ BEGIN
     WHERE il.InvoiceID = @InvoiceID
     ORDER BY il.InvoiceLineID;
 END
-
 GO
 
 

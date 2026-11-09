@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "../customersSection/customersSection.module.css";
+import { apiRequest } from "../crud/apiClient";
 
 type CustomerDetailsData = {
     CustomerName: string;
@@ -32,20 +33,9 @@ export function CustomerDetails({ customerName, onClose }: CustomerDetailsProps)
     useEffect(() => {
         const getCustomerDetails = async () => {
             try {
-                const response = await fetch(
-                    `http://localhost:3000/api/customers/specific?name=${encodeURIComponent(customerName)}`,
-                    {
-                        headers: {
-                            "x-api-key": "6ef7908d83e853df10583389fd0279f67196882d4614da87f9b732330c94bab4"
-                        },
-                    }
+                const data = await apiRequest<CustomerDetailsData[]>(
+                    `/customers/specific?name=${encodeURIComponent(customerName)}`
                 );
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener los detalles del cliente");
-                }
-
-                const data = await response.json();
 
                 // El endpoint devuelve un array
                 setCustomerDetails(data[0]);

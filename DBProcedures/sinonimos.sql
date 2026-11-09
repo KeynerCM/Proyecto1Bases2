@@ -64,3 +64,18 @@ CREATE SYNONYM dbo.syn_Cities FOR Application.Cities;
 DROP SYNONYM IF EXISTS dbo.syn_StateProvinces;
 CREATE SYNONYM dbo.syn_StateProvinces FOR Application.StateProvinces;
 GO
+
+-- CRUD (los usan los procedimientos de CrudProcedures.sql)
+
+DROP SYNONYM IF EXISTS dbo.syn_StockItemTransactions;
+CREATE SYNONYM dbo.syn_StockItemTransactions FOR Warehouse.StockItemTransactions;
+
+DROP SYNONYM IF EXISTS dbo.syn_CustomerTransactions;
+CREATE SYNONYM dbo.syn_CustomerTransactions FOR Sales.CustomerTransactions;
+
+DROP SYNONYM IF EXISTS dbo.syn_OrderLines;
+CREATE SYNONYM dbo.syn_OrderLines FOR Sales.OrderLines;
+
+DROP SYNONYM IF EXISTS dbo.syn_SpecialDeals;
+CREATE SYNONYM dbo.syn_SpecialDeals FOR Sales.SpecialDeals;
+GO

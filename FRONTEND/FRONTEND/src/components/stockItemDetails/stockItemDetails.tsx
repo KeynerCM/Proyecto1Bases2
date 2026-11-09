@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./stockItemDetails.module.css";
+import { apiRequest } from "../crud/apiClient";
 
 type ProductDetails = {
     StockItemID: number;
@@ -34,20 +35,7 @@ export function StockItemDetails({ stockItemId, onClose }: StockItemDetailsProps
     useEffect(() => {
         const getProductDetails = async () => {
             try {
-                const response = await fetch(
-                    `http://localhost:3000/api/inventory/specific?id=${stockItemId}`,
-                    {
-                        headers: {
-                            "x-api-key": "6ef7908d83e853df10583389fd0279f67196882d4614da87f9b732330c94bab4",
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener los detalles del producto");
-                }
-
-                const data = await response.json();
+                const data = await apiRequest<ProductDetails[]>(`/inventory/specific?id=${stockItemId}`);
 
                 // El endpoint devuelve un array
                 setProductDetails(data[0] || null);

@@ -7,6 +7,7 @@ const inventoryRoutes = require('./src/routes/inventoryRoutes');
 const salesRoutes = require('./src/routes/salesRoutes');
 const proveedoresRoutes = require('./src/routes/proveedoresRoutes');
 const estadisticasRoutes = require('./src/routes/estadisticasRoutes');
+const catalogRoutes = require('./src/routes/catalogRoutes');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/inventory', inventoryRoutes);
 app.use('/api/sales', salesRoutes);
 app.use('/api/proveedores', proveedoresRoutes);
 app.use('/api/estadisticas', estadisticasRoutes);
+app.use('/api/catalogs', catalogRoutes);
 
 
 // ==============================

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './NavBar.module.css';
 
 const SECTIONS = [
-    'Inicio',
     'Clientes',
     'Proveedores',
     'Inventarios',
@@ -10,14 +9,19 @@ const SECTIONS = [
     'Estadísticas',
 ];
 
-export function NavBar({ selectedSection, setSelectedSection }) {
+type NavBarProps = {
+    selectedSection: string;
+    setSelectedSection: (section: string) => void;
+};
+
+export function NavBar({ selectedSection, setSelectedSection }: NavBarProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     // Cerrar con la tecla Escape y bloquear el scroll del fondo mientras el menú está abierto
     useEffect(() => {
         if (!isOpen) return;
 
-        const handleKeyDown = (e) => {
+        const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') setIsOpen(false);
         };
 
@@ -33,14 +37,14 @@ export function NavBar({ selectedSection, setSelectedSection }) {
     // Si la pantalla se agranda a escritorio, cerrar el menú móvil
     useEffect(() => {
         const media = window.matchMedia('(min-width: 901px)');
-        const handleChange = (e) => {
+        const handleChange = (e: MediaQueryListEvent) => {
             if (e.matches) setIsOpen(false);
         };
         media.addEventListener('change', handleChange);
         return () => media.removeEventListener('change', handleChange);
     }, []);
 
-    const handleSelect = (section) => {
+    const handleSelect = (section: string) => {
         setSelectedSection(section);
         setIsOpen(false);
     };

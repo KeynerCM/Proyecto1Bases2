@@ -28,7 +28,7 @@ GROUP BY ROLLUP (c.CustomerName, cc.CustomerCategoryName, c.CustomerID);
 GO
 
 --PROCEDIMIENTO DE ESTADISTICAS 1
-CREATE PROCEDURE EstadisticasCompras
+CREATE OR ALTER PROCEDURE EstadisticasCompras
     @Proveedor NVARCHAR(100) = NULL,
     @Categoria NVARCHAR(100) = NULL
 AS
@@ -50,7 +50,7 @@ BEGIN
 END;
 GO
 --PROCEDIMIENTO DE ESTADISTICAS 2
-CREATE PROCEDURE EstadisticasVentas
+CREATE OR ALTER PROCEDURE EstadisticasVentas
     @Cliente NVARCHAR(100) = NULL,
     @Categoria NVARCHAR(100) = NULL
 AS

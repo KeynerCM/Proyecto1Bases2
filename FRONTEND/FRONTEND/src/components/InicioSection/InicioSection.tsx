@@ -1,5 +1,4 @@
 import styles from './InicioSection.module.css'
-import react from 'react'
 
 export function InicioSection() {
     return (

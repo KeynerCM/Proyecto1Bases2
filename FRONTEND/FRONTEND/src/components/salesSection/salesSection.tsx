@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./salesSection.module.css";
 import { InvoiceDetails } from "../invoiceDetails/invoiceDetails";
+import { InvoiceFormModal } from "../crud/InvoiceFormModal";
+import { ConfirmDeleteModal } from "../crud/ConfirmDeleteModal";
+import { useCrudActions } from "../crud/useCrudActions";
+import { SelectionBanner, SuccessNotice } from "../crud/CrudNotices";
+import { apiRequest } from "../crud/apiClient";
 
 const ROWS_PER_PAGE = 20;
 
@@ -23,6 +28,8 @@ export function SalesSection() {
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [selectedInvoiceId, setSelectedInvoiceId] = useState<number | null>(null);
+
+    const crud = useCrudActions<Sale>();
 
     const validateFilters = () => {
         if (startDate !== "" && endDate !== "" && startDate > endDate) {
@@ -59,20 +66,9 @@ export function SalesSection() {
                 setLoading(true);
                 setErrorMessage("");
 
-                const response = await fetch(
-                    `http://localhost:3000/api/sales?pageNumber=${currentPage}&customer=${encodeURIComponent(customerFilter)}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}`,
-                    {
-                        headers: {
-                            "x-api-key": "6ef7908d83e853df10583389fd0279f67196882d4614da87f9b732330c94bab4",
-                        },
-                    }
+                const data = await apiRequest<Sale[]>(
+                    `/sales?pageNumber=${currentPage}&customer=${encodeURIComponent(customerFilter)}&startDate=${startDate}&endDate=${endDate}&minAmount=${minAmount}&maxAmount=${maxAmount}`
                 );
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener las ventas");
-                }
-
-                const data = await response.json();
 
                 if (!ignore) {
                     setSales(data);
@@ -80,8 +76,10 @@ export function SalesSection() {
 
             } catch (error) {
                 console.error(error);
-                setSales([]);
-                setErrorMessage("Could not load the sales. Please try again.");
+                if (!ignore) {
+                    setSales([]);
+                    setErrorMessage("Could not load the sales. Please try again.");
+                }
             } finally {
                 if (!ignore) {
                     setLoading(false);
@@ -95,7 +93,7 @@ export function SalesSection() {
             ignore = true;
         };
 
-    }, [currentPage, customerFilter, startDate, endDate, minAmount, maxAmount, validationError]);
+    }, [currentPage, customerFilter, startDate, endDate, minAmount, maxAmount, validationError, crud.refreshKey]);
 
 
     const handleFilterChange = (setFilter: (value: string) => void) =>
@@ -113,13 +111,44 @@ export function SalesSection() {
         setCurrentPage(1);
     };
 
+    const deleteSale = async () => {
+        if (!crud.deleting) return;
+        await apiRequest(`/sales/${crud.deleting.InvoiceID}`, { method: "DELETE" });
+    };
+
     return (
         <section className={styles.salesSection}>
             <div className={styles.actionsBar}>
-                <button className={styles.botonInsertarCliente}>Insertar Venta</button>
-                <button className={styles.botonActualizarCliente}>Actualizar Venta</button>
-                <button className={styles.botonEliminarCliente}>Eliminar Venta</button>
+                <button
+                    className={styles.botonInsertarCliente}
+                    onClick={crud.startCreate}
+                >
+                    Insertar Venta
+                </button>
+
+                <button
+                    className={`${styles.botonActualizarCliente} ${crud.activeClass("update")}`}
+                    onClick={() => crud.toggleMode("update")}
+                >
+                    Actualizar Venta
+                </button>
+
+                <button
+                    className={`${styles.botonEliminarCliente} ${crud.activeClass("delete")}`}
+                    onClick={() => crud.toggleMode("delete")}
+                >
+                    Eliminar Venta
+                </button>
             </div>
+
+            <SuccessNotice message={crud.notice} />
+
+            <SelectionBanner
+                mode={crud.actionMode}
+                entity="una venta"
+                pronoun="la"
+                onCancel={() => crud.setActionMode("view")}
+            />
 
             <div className={styles.filterContainer}>
                 <input
@@ -198,13 +227,13 @@ export function SalesSection() {
                 </p>
             )}
 
-            <div className={styles.salesCards}>
+            <div className={`${styles.salesCards} ${crud.cardsClassName}`}>
 
                 {!validationError && sales.map((sale) => (
                     <div
                         key={sale.InvoiceID}
                         className={styles.saleCard}
-                        onClick={() => setSelectedInvoiceId(sale.InvoiceID)}
+                        onClick={() => crud.handleCardClick(sale, (item) => setSelectedInvoiceId(item.InvoiceID))}
                     >
                         <h3>Invoice #{sale.InvoiceID}</h3>
 
@@ -251,6 +280,39 @@ export function SalesSection() {
                 <InvoiceDetails
                     invoiceId={selectedInvoiceId}
                     onClose={() => setSelectedInvoiceId(null)}
+                />
+            )}
+
+
+            {/* =========================
+                INSERTAR / ACTUALIZAR / ELIMINAR
+            ========================= */}
+
+            {crud.creating && (
+                <InvoiceFormModal
+                    mode="create"
+                    onClose={() => crud.setCreating(false)}
+                    onSaved={crud.finish}
+                />
+            )}
+
+            {crud.editing && (
+                <InvoiceFormModal
+                    mode="update"
+                    invoiceId={crud.editing.InvoiceID}
+                    onClose={() => crud.setEditing(null)}
+                    onSaved={crud.finish}
+                />
+            )}
+
+            {crud.deleting && (
+                <ConfirmDeleteModal
+                    title="Eliminar venta"
+                    itemName={`la factura #${crud.deleting.InvoiceID} de ${crud.deleting.CustomerName}`}
+                    warning="También se eliminarán sus líneas y las transacciones de cliente e inventario que generó."
+                    onConfirm={deleteSale}
+                    onDeleted={() => crud.finish("Venta eliminada correctamente.")}
+                    onClose={() => crud.setDeleting(null)}
                 />
             )}
 

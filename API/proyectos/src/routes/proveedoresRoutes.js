@@ -14,12 +14,19 @@ const {
 
 
 // GET /api/proveedores?nombre=...&categoria=...
-// (sin API key, igual que antes, para no romper el frontend)
-router.get('/', getProveedores);
+router.get(
+    '/',
+    validateApiKey,
+    getProveedores
+);
 
 
 // GET /api/proveedores/specific?name=...
-router.get('/specific', getProveedorSpecific);
+router.get(
+    '/specific',
+    validateApiKey,
+    getProveedorSpecific
+);
 
 
 // POST /api/proveedores

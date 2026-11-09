@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./inventorySection.module.css";
 import { StockItemDetails } from "../stockItemDetails/stockItemDetails";
+import { StockItemFormModal } from "../crud/StockItemFormModal";
+import { ConfirmDeleteModal } from "../crud/ConfirmDeleteModal";
+import { useCrudActions } from "../crud/useCrudActions";
+import { SelectionBanner, SuccessNotice } from "../crud/CrudNotices";
+import { apiRequest } from "../crud/apiClient";
 
 const ROWS_PER_PAGE = 20;
 
@@ -28,6 +33,8 @@ export function InventorySection() {
     const [loading, setLoading] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
 
+    const crud = useCrudActions<Product>();
+
     const validateQuantities = () => {
         if (minQuantity !== "" && (!Number.isInteger(Number(minQuantity)) || Number(minQuantity) < 1)) {
             return "Minimum quantity must be a whole number greater than 0";
@@ -49,20 +56,7 @@ export function InventorySection() {
     useEffect(() => {
         const getStockGroups = async () => {
             try {
-                const response = await fetch(
-                    "http://localhost:3000/api/inventory/groups",
-                    {
-                        headers: {
-                            "x-api-key": "6ef7908d83e853df10583389fd0279f67196882d4614da87f9b732330c94bab4",
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener los grupos");
-                }
-
-                const data = await response.json();
+                const data = await apiRequest<StockGroup[]>("/inventory/groups");
 
                 setStockGroups(data);
 
@@ -85,20 +79,9 @@ export function InventorySection() {
                 setLoading(true);
                 setErrorMessage("");
 
-                const response = await fetch(
-                    `http://localhost:3000/api/inventory?pageNumber=${currentPage}&name=${encodeURIComponent(nameFilter)}&groupId=${groupFilter}&minQuantity=${minQuantity}&maxQuantity=${maxQuantity}`,
-                    {
-                        headers: {
-                            "x-api-key": "6ef7908d83e853df10583389fd0279f67196882d4614da87f9b732330c94bab4",
-                        },
-                    }
+                const data = await apiRequest<Product[]>(
+                    `/inventory?pageNumber=${currentPage}&name=${encodeURIComponent(nameFilter)}&groupId=${groupFilter}&minQuantity=${minQuantity}&maxQuantity=${maxQuantity}`
                 );
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener los productos");
-                }
-
-                const data = await response.json();
 
                 setProducts(data);
 
@@ -113,7 +96,7 @@ export function InventorySection() {
 
         getProducts();
 
-    }, [currentPage, nameFilter, groupFilter, minQuantity, maxQuantity, validationError]);
+    }, [currentPage, nameFilter, groupFilter, minQuantity, maxQuantity, validationError, crud.refreshKey]);
 
 
     const handleFilterChange = (setFilter: (value: string) => void) =>
@@ -130,15 +113,46 @@ export function InventorySection() {
         setCurrentPage(1);
     };
 
+    const deleteProduct = async () => {
+        if (!crud.deleting) return;
+        await apiRequest(`/inventory/${crud.deleting.StockItemID}`, { method: "DELETE" });
+    };
+
     return (
         <section className={styles.inventorySection}>
             <div className={styles.actionsBar}>
-                <button className={styles.botonInsertarCliente}>Insertar Producto</button>
-                <button className={styles.botonActualizarCliente}>Actualizar Producto</button>
-                <button className={styles.botonEliminarCliente}>Eliminar Producto</button>
+                <button
+                    className={styles.botonInsertarCliente}
+                    onClick={crud.startCreate}
+                >
+                    Insertar Producto
+                </button>
+
+                <button
+                    className={`${styles.botonActualizarCliente} ${crud.activeClass("update")}`}
+                    onClick={() => crud.toggleMode("update")}
+                >
+                    Actualizar Producto
+                </button>
+
+                <button
+                    className={`${styles.botonEliminarCliente} ${crud.activeClass("delete")}`}
+                    onClick={() => crud.toggleMode("delete")}
+                >
+                    Eliminar Producto
+                </button>
             </div>
 
-            <div className={styles.filterContainer}>a
+            <SuccessNotice message={crud.notice} />
+
+            <SelectionBanner
+                mode={crud.actionMode}
+                entity="un producto"
+                pronoun="lo"
+                onCancel={() => crud.setActionMode("view")}
+            />
+
+            <div className={styles.filterContainer}>
                 <input
                     type="text"
                     placeholder="Search by product name..."
@@ -206,13 +220,13 @@ export function InventorySection() {
                 </p>
             )}
 
-            <div className={styles.productsCards}>
+            <div className={`${styles.productsCards} ${crud.cardsClassName}`}>
 
                 {!validationError && products.map((product) => (
                     <div
                         key={product.StockItemID}
                         className={styles.productCard}
-                        onClick={() => setSelectedProductId(product.StockItemID)}
+                        onClick={() => crud.handleCardClick(product, (item) => setSelectedProductId(item.StockItemID))}
                     >
                         <h3>{product.StockItemName}</h3>
 
@@ -255,6 +269,40 @@ export function InventorySection() {
                 <StockItemDetails
                     stockItemId={selectedProductId}
                     onClose={() => setSelectedProductId(null)}
+                />
+            )}
+
+
+            {/* =========================
+                INSERTAR / ACTUALIZAR / ELIMINAR
+            ========================= */}
+
+            {crud.creating && (
+                <StockItemFormModal
+                    mode="create"
+                    onClose={() => crud.setCreating(false)}
+                    onSaved={crud.finish}
+                />
+            )}
+
+            {crud.editing && (
+                <StockItemFormModal
+                    mode="update"
+                    stockItemId={crud.editing.StockItemID}
+                    stockItemName={crud.editing.StockItemName}
+                    onClose={() => crud.setEditing(null)}
+                    onSaved={crud.finish}
+                />
+            )}
+
+            {crud.deleting && (
+                <ConfirmDeleteModal
+                    title="Eliminar producto"
+                    itemName={crud.deleting.StockItemName}
+                    warning="Solo se pueden eliminar productos que no aparezcan en facturas, pedidos ni movimientos de inventario."
+                    onConfirm={deleteProduct}
+                    onDeleted={() => crud.finish("Producto eliminado correctamente.")}
+                    onClose={() => crud.setDeleting(null)}
                 />
             )}
 

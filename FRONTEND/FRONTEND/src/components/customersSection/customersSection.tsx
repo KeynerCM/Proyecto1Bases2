@@ -1,66 +1,100 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import styles from "./customersSection.module.css";
 import { CustomerDetails } from "../customerDetails/customerDetails";
+import { CustomerFormModal } from "../crud/CustomerFormModal";
+import { ConfirmDeleteModal } from "../crud/ConfirmDeleteModal";
+import { useCrudActions } from "../crud/useCrudActions";
+import { SelectionBanner, SuccessNotice } from "../crud/CrudNotices";
+import { apiRequest } from "../crud/apiClient";
+
+type Customer = {
+    CustomerID: number;
+    CUSTOMERNAME: string;
+    CustomerCategoryName: string;
+    DeliveryMethodName: string;
+};
 
 export function CustomersSection() {
     const [currentPage, setCurrentPage] = useState(1);
     const [nameFilter, setNameFilter] = useState("");
-    const [customers, setCustomers] = useState([]);
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
+    const [customers, setCustomers] = useState<Customer[]>([]);
+    const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
-    const handleCustomerClick = (customer) => {
-        setSelectedCustomer(customer);
-    };
+    const crud = useCrudActions<Customer>();
 
     useEffect(() => {
         const getCustomers = async () => {
             try {
-                const response = await fetch(
-                    `http://localhost:3000/api/customers?pageNumber=${currentPage}&name=${encodeURIComponent(nameFilter)}`,
-                    {
-                        headers: {
-                            "x-api-key": "6ef7908d83e853df10583389fd0279f67196882d4614da87f9b732330c94bab4",
-                        },
-                    }
+                const data = await apiRequest<Customer[]>(
+                    `/customers?pageNumber=${currentPage}&name=${encodeURIComponent(nameFilter)}`
                 );
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener los clientes");
-                }
-
-                const data = await response.json();
 
                 setCustomers(data);
 
             } catch (error) {
-                console.error(error);
+                console.error("Error al obtener los clientes:", error);
             }
         };
 
         getCustomers();
 
-    }, [currentPage, nameFilter]);
+    }, [currentPage, nameFilter, crud.refreshKey]);
 
 
-    
-
-    const handleSearch = (event) => {
+    const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
         setNameFilter(event.target.value);
         setCurrentPage(1);
     };
 
+    const handleCustomerClick = (customer: Customer) => {
+        crud.handleCardClick(customer, setSelectedCustomer);
+    };
 
     const closeCustomerDetails = () => {
         setSelectedCustomer(null);
     };
 
+    const deleteCustomer = async () => {
+        if (!crud.deleting?.CustomerID) {
+            throw new Error("El listado no trae CustomerID. Ejecuta los scripts SQL actualizados.");
+        }
+
+        await apiRequest(`/customers/${crud.deleting.CustomerID}`, { method: "DELETE" });
+    };
+
     return (
         <section className={styles.customersSection}>
             <div className={styles.actionsBar}>
-                <button className={styles.botonInsertarCliente}>Insertar Cliente</button>
-                <button className={styles.botonActualizarCliente}>Actualizar Cliente</button>
-                <button className={styles.botonEliminarCliente}>Eliminar Cliente</button>
+                <button
+                    className={styles.botonInsertarCliente}
+                    onClick={crud.startCreate}
+                >
+                    Insertar Cliente
+                </button>
+
+                <button
+                    className={`${styles.botonActualizarCliente} ${crud.activeClass("update")}`}
+                    onClick={() => crud.toggleMode("update")}
+                >
+                    Actualizar Cliente
+                </button>
+
+                <button
+                    className={`${styles.botonEliminarCliente} ${crud.activeClass("delete")}`}
+                    onClick={() => crud.toggleMode("delete")}
+                >
+                    Eliminar Cliente
+                </button>
             </div>
+
+            <SuccessNotice message={crud.notice} />
+
+            <SelectionBanner
+                mode={crud.actionMode}
+                entity="un cliente"
+                pronoun="lo"
+                onCancel={() => crud.setActionMode("view")}
+            />
 
             <div className={styles.filterContainer}>
                 <input
@@ -72,11 +106,11 @@ export function CustomersSection() {
                 />
             </div>
 
-            <div className={styles.customersCards}>
+            <div className={`${styles.customersCards} ${crud.cardsClassName}`}>
 
                 {customers.map((customer, index) => (
                     <div
-                        key={index}
+                        key={customer.CustomerID ?? index}
                         className={styles.customerCard}
                         onClick={() => handleCustomerClick(customer)}
                     >
@@ -120,6 +154,39 @@ export function CustomersSection() {
                 <CustomerDetails
                     customerName={selectedCustomer.CUSTOMERNAME}
                     onClose={closeCustomerDetails}
+                />
+            )}
+
+
+            {/* =========================
+                INSERTAR / ACTUALIZAR / ELIMINAR
+            ========================= */}
+
+            {crud.creating && (
+                <CustomerFormModal
+                    mode="create"
+                    onClose={() => crud.setCreating(false)}
+                    onSaved={crud.finish}
+                />
+            )}
+
+            {crud.editing && (
+                <CustomerFormModal
+                    mode="update"
+                    customerName={crud.editing.CUSTOMERNAME}
+                    onClose={() => crud.setEditing(null)}
+                    onSaved={crud.finish}
+                />
+            )}
+
+            {crud.deleting && (
+                <ConfirmDeleteModal
+                    title="Eliminar cliente"
+                    itemName={crud.deleting.CUSTOMERNAME}
+                    warning="Solo se pueden eliminar clientes sin facturas, pedidos ni transacciones."
+                    onConfirm={deleteCustomer}
+                    onDeleted={() => crud.finish("Cliente eliminado correctamente.")}
+                    onClose={() => crud.setDeleting(null)}
                 />
             )}
 

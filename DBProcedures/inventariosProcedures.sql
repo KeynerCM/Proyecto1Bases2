@@ -44,7 +44,14 @@ BEGIN
     SELECT s.StockItemID, s.StockItemName, p.SupplierID, p.SupplierName, p.WebsiteURL AS SupplierWebsiteURL,
     c.ColorName, up.PackageTypeName AS UnitPackage, op.PackageTypeName AS OuterPackage,
     s.QuantityPerOuter, s.Brand, s.Size, s.TaxRate, s.UnitPrice, s.RecommendedRetailPrice,
-    s.TypicalWeightPerUnit, s.SearchDetails, h.QuantityOnHand, h.BinLocation
+    s.TypicalWeightPerUnit, s.SearchDetails, h.QuantityOnHand, h.BinLocation,
+    -- Para el formulario de edición
+    s.ColorID, s.UnitPackageID, s.OuterPackageID, s.LeadTimeDays, s.IsChillerStock, s.Barcode,
+    s.MarketingComments, s.InternalComments,
+    h.LastCostPrice, h.ReorderLevel, h.TargetStockLevel,
+    (SELECT STRING_AGG(CAST(sg.StockGroupID AS NVARCHAR(10)), ',')
+     FROM syn_StockItemStockGroups sg
+     WHERE sg.StockItemID = s.StockItemID) AS StockGroupIDs
 
     FROM syn_StockItems s
     INNER JOIN syn_Suppliers p
