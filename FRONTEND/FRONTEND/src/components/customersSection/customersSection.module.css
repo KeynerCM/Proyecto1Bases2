@@ -34,6 +34,67 @@
 /* =========================
    SECCIÓN PRINCIPAL
 ========================= */
+/* =========================
+   BARRA DE ACCIONES
+========================= */
+
+.actionsBar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.botonInsertarCliente,
+.botonActualizarCliente,
+.botonEliminarCliente {
+    padding: 10px 20px;
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.botonInsertarCliente:hover,
+.botonActualizarCliente:hover,
+.botonEliminarCliente:hover {
+    transform: translateY(-2px);
+}
+
+/* Insertar: verde */
+.botonInsertarCliente {
+    background-color: #16a34a;
+}
+.botonInsertarCliente:hover {
+    background-color: #15803d;
+}
+
+/* Actualizar: azul */
+.botonActualizarCliente {
+    background-color: var(--primary);
+}
+.botonActualizarCliente:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Eliminar: rojo */
+.botonEliminarCliente {
+    background-color: #dc2626;
+}
+.botonEliminarCliente:hover {
+    background-color: #b91c1c;
+}
+
+.botonInsertarCliente:focus-visible,
+.botonActualizarCliente:focus-visible,
+.botonEliminarCliente:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--primary-ring);
+}
 
 .customersSection {
     width: 100%;

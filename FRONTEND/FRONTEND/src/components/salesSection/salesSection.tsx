@@ -115,6 +115,11 @@ export function SalesSection() {
 
     return (
         <section className={styles.salesSection}>
+            <div className={styles.actionsBar}>
+                <button className={styles.botonInsertarCliente}>Insertar Venta</button>
+                <button className={styles.botonActualizarCliente}>Actualizar Venta</button>
+                <button className={styles.botonEliminarCliente}>Eliminar Venta</button>
+            </div>
 
             <div className={styles.filterContainer}>
                 <input

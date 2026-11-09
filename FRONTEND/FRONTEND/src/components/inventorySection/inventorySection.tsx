@@ -132,8 +132,13 @@ export function InventorySection() {
 
     return (
         <section className={styles.inventorySection}>
+            <div className={styles.actionsBar}>
+                <button className={styles.botonInsertarCliente}>Insertar Producto</button>
+                <button className={styles.botonActualizarCliente}>Actualizar Producto</button>
+                <button className={styles.botonEliminarCliente}>Eliminar Producto</button>
+            </div>
 
-            <div className={styles.filterContainer}>
+            <div className={styles.filterContainer}>a
                 <input
                     type="text"
                     placeholder="Search by product name..."

@@ -123,6 +123,11 @@ export function ProveedoresSection() {
 
     return (
         <section className={styles.proveedoresSection}>
+            <div className={styles.actionsBar}>
+                <button className={styles.botonInsertarCliente}>Insertar Cliente</button>
+                <button className={styles.botonActualizarCliente}>Actualizar Cliente</button>
+                <button className={styles.botonEliminarCliente}>Eliminar Cliente</button>
+            </div>
 
             {/* =========================
                 FILTROS

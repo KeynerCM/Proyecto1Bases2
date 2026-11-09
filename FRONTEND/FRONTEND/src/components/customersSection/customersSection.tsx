@@ -56,6 +56,11 @@ export function CustomersSection() {
 
     return (
         <section className={styles.customersSection}>
+            <div className={styles.actionsBar}>
+                <button className={styles.botonInsertarCliente}>Insertar Cliente</button>
+                <button className={styles.botonActualizarCliente}>Actualizar Cliente</button>
+                <button className={styles.botonEliminarCliente}>Eliminar Cliente</button>
+            </div>
 
             <div className={styles.filterContainer}>
                 <input
